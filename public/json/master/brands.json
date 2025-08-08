@@ -1,0 +1,398 @@
+[
+  {
+    "id": 1,
+    "name": "7Artisans",
+    "slug": "7artisans",
+    "thumbnail": "brand/7artisans-dark.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 2,
+    "name": "Adidas",
+    "slug": "adidas",
+    "thumbnail": "brand/adidas-dark.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 3,
+    "name": "Advance",
+    "slug": "advance",
+    "thumbnail": "brand/advance-dark.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 4,
+    "name": "Apple",
+    "slug": "apple",
+    "thumbnail": "brand/apple-dark.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 5,
+    "name": "Brica",
+    "slug": "brica",
+    "thumbnail": "brand/brica-dark.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 6,
+    "name": "Brightin Star",
+    "slug": "brightin-star",
+    "thumbnail": "brand/brightin-star-dark.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 7,
+    "name": "Canon",
+    "slug": "canon",
+    "thumbnail": "brand/canon-dark.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 8,
+    "name": "Comlite",
+    "slug": "comlite",
+    "thumbnail": "brand/comlite.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 9,
+    "name": "Costa",
+    "slug": "costa",
+    "thumbnail": "brand/costa.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 10,
+    "name": "CP Company",
+    "slug": "cp-company",
+    "thumbnail": "brand/cp-company-dark.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 11,
+    "name": "Dji",
+    "slug": "dji",
+    "thumbnail": "brand/dji-dark.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 12,
+    "name": "Feelworld",
+    "slug": "feelworld",
+    "thumbnail": "brand/feelworld.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 13,
+    "name": "Feiyu",
+    "slug": "feiyu",
+    "thumbnail": "brand/feiyu.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 14,
+    "name": "Fujifilm",
+    "slug": "fujifilm",
+    "thumbnail": "brand/fujifilm-dark.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 15,
+    "name": "Godox",
+    "slug": "godox",
+    "thumbnail": "brand/godox.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 16,
+    "name": "Google",
+    "slug": "google",
+    "thumbnail": "brand/google-dark.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 17,
+    "name": "Go Pro",
+    "slug": "go-pro",
+    "thumbnail": "brand/gopro-dark.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 18,
+    "name": "Hollyland",
+    "slug": "hollyland",
+    "thumbnail": "brand/hollyland.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 19,
+    "name": "Insta",
+    "slug": "insta",
+    "thumbnail": "brand/insta-dark.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 20,
+    "name": "Lumix",
+    "slug": "lumix",
+    "thumbnail": "brand/lumix-dark.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 21,
+    "name": "Meike",
+    "slug": "meike",
+    "thumbnail": "brand/meike-dark.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 22,
+    "name": "Moza",
+    "slug": "moza",
+    "thumbnail": "brand/moza.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 23,
+    "name": "Nikon",
+    "slug": "nikon",
+    "thumbnail": "brand/nikon.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 24,
+    "name": "Procore",
+    "slug": "procore",
+    "thumbnail": "brand/procore.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 25,
+    "name": "Rode",
+    "slug": "rode",
+    "thumbnail": "brand/rode.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 26,
+    "name": "Samsung",
+    "slug": "samsung",
+    "thumbnail": "brand/samsung.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 27,
+    "name": "Samyang",
+    "slug": "samyang",
+    "thumbnail": "brand/samyang.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 28,
+    "name": "Saramonic",
+    "slug": "saramonic",
+    "thumbnail": "brand/saramonic.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 29,
+    "name": "Sigma",
+    "slug": "sigma",
+    "thumbnail": "brand/sigma.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 30,
+    "name": "Sirui",
+    "slug": "sirui",
+    "thumbnail": "brand/sirui.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 31,
+    "name": "Sony",
+    "slug": "sony",
+    "thumbnail": "brand/sony-dark.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 32,
+    "name": "Stone Island",
+    "slug": "stone-island",
+    "thumbnail": "brand/stone-island-dark.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 33,
+    "name": "Tamron",
+    "slug": "tamron",
+    "thumbnail": "brand/tamron.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 34,
+    "name": "Tascam",
+    "slug": "tascam",
+    "thumbnail": "brand/tascam.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 35,
+    "name": "TNW",
+    "slug": "tnw",
+    "thumbnail": "brand/tnw.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 36,
+    "name": "Ttartisan",
+    "slug": "ttartisan",
+    "thumbnail": "brand/ttartisan.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 37,
+    "name": "Viltrox",
+    "slug": "viltrox",
+    "thumbnail": "brand/viltrox.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 38,
+    "name": "Ulanzi",
+    "slug": "ulanzi",
+    "thumbnail": "brand/ulanzi.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 39,
+    "name": "Wuling",
+    "slug": "wuling",
+    "thumbnail": "brand/wuling.svg",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 40,
+    "name": "Yamaha",
+    "slug": "yamaha",
+    "thumbnail": "brand/yamaha.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 41,
+    "name": "Yongnuo",
+    "slug": "yongnuo",
+    "thumbnail": "brand/yongnuo.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 42,
+    "name": "Zhiyun",
+    "slug": "zhiyun",
+    "thumbnail": "brand/zhiyun.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 43,
+    "name": "Zeiss",
+    "slug": "zeiss",
+    "thumbnail": "brand/zeiss.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 44,
+    "name": "Zoom",
+    "slug": "zoom",
+    "thumbnail": "brand/zoom.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  }
+]

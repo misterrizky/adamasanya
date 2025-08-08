@@ -1,0 +1,6 @@
+- ## Get Started
+    - [Overview](/{{route}}/{{version}}/overview)
+- ## Main Features
+    - [Dashboard](/{{route}}/{{version}}/dashboard)
+    - [Customer Management](/{{route}}/{{version}}/customer-management)
+    - [Kesimpulan](/{{route}}/{{version}}/conclusion)

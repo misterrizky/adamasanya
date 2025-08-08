@@ -1,0 +1,51 @@
+[
+  {
+    "uuid": "",
+    "name": "Paypal",
+    "alias": "paypal",
+    "images": "images/payment-gateways/paypal.png",
+    "fees": 0,
+    "credentials": "{\"client_id\":null,\"client_secret\":null,\"webhook_id\":null}",
+    "parameters": "[{\"type\": \"event\", \"label\": \"Webhook Event\", \"content\": \"payment.capture.completed\"},\r\n{\"type\": \"route\", \"label\": \"Webhook Endpoint\", \"content\": \"payments/webhooks/paypal\" }]",
+    "is_manual": 0,
+    "instructions": null,
+    "mode": "sandbox",
+    "status": 0
+  },
+  {
+    "name": "Bank Central Asia",
+    "alias": "bankwire",
+    "images": "images/payment-gateways/bankwire.png",
+    "fees": 0,
+    "credentials": null,
+    "parameters": null,
+    "is_manual": 1,
+    "instructions": "<p>8470614391<br>A/N Rizky Ramadhan<br>Bank BCA</p>",
+    "mode": null,
+    "status": 1
+  },
+  {
+    "name": "Midtrans",
+    "alias": "midtrans",
+    "images": "images/payment-gateways/midtrans.png",
+    "fees": 0,
+    "credentials": "{\"server_key\":null}",
+    "parameters": "[{\"type\": \"route\", \"label\": \"Finish URL\", \"content\": \"payments/ipn/midtrans\"},\n{\"type\": \"route\", \"label\": \"Unfinish URL\", \"content\": \"payments/ipn/midtrans\"},\n{\"type\": \"route\", \"label\": \"Error Payment URL\", \"content\":\"payments/ipn/midtrans\"}]",
+    "is_manual": 0,
+    "instructions": null,
+    "mode": "sandbox",
+    "status": 0
+  },
+  {
+    "name": "Xendit",
+    "alias": "xendit",
+    "images": "images/payment-gateways/xendit.png",
+    "fees": 0,
+    "credentials": "{\"api_secret_key\":null,\"webhook_verification_token\":null}",
+    "parameters": "[{\"type\": \"event\", \"label\": \"Webhook Event\", \"content\": \"invoices.paid\"},\r\n{\"type\": \"route\", \"label\": \"Webhook Endpoint\", \"content\": \"payments/webhooks/xendit\" }]",
+    "is_manual": 0,
+    "instructions": null,
+    "mode": null,
+    "status": 0
+  }
+]

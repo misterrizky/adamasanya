@@ -1,0 +1,26 @@
+[
+    {
+        "guard_name" : "web",
+        "name": "Super Admin"
+    },
+    {
+        "guard_name" : "web",
+        "name": "Owner"
+    },
+    {
+        "guard_name" : "web",
+        "name": "Cabang"
+    },
+    {
+        "guard_name" : "web",
+        "name": "Pegawai"
+    },
+    {
+        "guard_name" : "web",
+        "name": "Konsumen"
+    },
+    {
+        "guard_name" : "web",
+        "name": "Onboarding"
+    }
+]

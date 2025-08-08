@@ -1,0 +1,524 @@
+[
+  {
+    "id": 1,
+    "name": "Belum / Tidak Bekerja",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 2,
+    "name": "Mengurus Rumah Tangga",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 3,
+    "name": "Pelajar / Mahasiswa",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 4,
+    "name": "Pensiunan",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 5,
+    "name": "Pegawai Negeri Sipil (PNS)",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 6,
+    "name": "Tentara Nasional Indonesia (TNI)",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 7,
+    "name": "Kepolisian RI (POLRI)",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 8,
+    "name": "Perdagangan",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 9,
+    "name": "Petani / Pekebun",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 10,
+    "name": "Peternak",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 11,
+    "name": "Nelayan/Perikanan",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 12,
+    "name": "Industri",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 13,
+    "name": "Konstruksi",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 14,
+    "name": "Transportasi",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 15,
+    "name": "Karyawan Swasta",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 16,
+    "name": "Karyawan BUMN",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 17,
+    "name": "Karyawan BUMD",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 18,
+    "name": "Karyawan Honorer",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 19,
+    "name": "Buruh Harian Lepas",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 20,
+    "name": "Buruh Tani / Perkebunan",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 21,
+    "name": "Buruh Nelayan/Perikanan",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 22,
+    "name": "Buruh Peternakan",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 23,
+    "name": "Pembantu Rumah Tangga",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 24,
+    "name": "Tukang Cukur",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 25,
+    "name": "Tukang Listrik",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 26,
+    "name": "Tukang Batu",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 27,
+    "name": "Tukang Kayu",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 28,
+    "name": "Tukang Sol Sepatu",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 29,
+    "name": "Tukang Las/Pandai Besi",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 30,
+    "name": "Tukang Jahit",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 31,
+    "name": "Tukang Gigi",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 32,
+    "name": "Penata Rias",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 33,
+    "name": "Penata Busana",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 34,
+    "name": "Mekanik",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 35,
+    "name": "Seniman",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 36,
+    "name": "Tabib",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 37,
+    "name": "Paraji",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 38,
+    "name": "Perancang Busana",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 39,
+    "name": "Penterjemah",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 40,
+    "name": "Imam Masjid",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 41,
+    "name": "Pendeta",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 42,
+    "name": "Pastor",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 43,
+    "name": "Wartawan",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 44,
+    "name": "Ustadz / Mubaligh",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 45,
+    "name": "Juru Masak",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 46,
+    "name": "Promotor Acara",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 47,
+    "name": "Anggota DPR-RI",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 48,
+    "name": "Anggota DPD",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 49,
+    "name": "Anggota BPK",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 50,
+    "name": "Presiden",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 51,
+    "name": "Wakil Presiden",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 52,
+    "name": "Anggota Mahkamah Konstitusi",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 53,
+    "name": "Anggota Kabinet Kementrian",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 54,
+    "name": "Duta Besar",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 55,
+    "name": "Gubernur",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 56,
+    "name": "Wakil Gbernur",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 57,
+    "name": "Bupati",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 58,
+    "name": "Wakil Bupati",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 59,
+    "name": "Walikota",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 60,
+    "name": "Wakil Walikota",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 61,
+    "name": "Anggota DPRP Prop.",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 62,
+    "name": "Anggota DPRP Kab.",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 63,
+    "name": "Dosen",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 64,
+    "name": "Guru",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 65,
+    "name": "Pilot",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 66,
+    "name": "Pengacara",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 67,
+    "name": "Notaris",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 68,
+    "name": "Arsitek",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 69,
+    "name": "Akuntan",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 70,
+    "name": "Konsultan",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 71,
+    "name": "Dokter",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 72,
+    "name": "Bidan",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 73,
+    "name": "Perawat",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 74,
+    "name": "Apoteker",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 75,
+    "name": "Psikiater/Psikolog",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 76,
+    "name": "Penyiar Televisi",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 77,
+    "name": "Penyiar Radio",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 78,
+    "name": "Pelaut",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 79,
+    "name": "Peneliti",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 80,
+    "name": "Sopir",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 81,
+    "name": "Pialang",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 82,
+    "name": "Paranormal",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 83,
+    "name": "Pedagang",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 84,
+    "name": "Perangkat Desa",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 85,
+    "name": "Kepala Desa",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 86,
+    "name": "Biarawati",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 87,
+    "name": "Wiraswasta",
+    "created_at": null,
+    "updated_at": null
+  }
+]

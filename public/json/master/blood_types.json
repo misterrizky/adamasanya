@@ -1,0 +1,67 @@
+[
+  {
+    "name": "A",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "name": "AB",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "name": "B",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "name": "O",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "name": "A+",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "name": "A-",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "name": "B+",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "name": "B-",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "name": "AB+",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "name": "AB-",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "name": "O+",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "name": "O-",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "name": "Tidak Tahu",
+    "created_at": null,
+    "updated_at": null
+  }
+]

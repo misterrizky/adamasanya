@@ -1,0 +1,134 @@
+[
+    {
+        "name" : "Pusat (Cimahi)",
+        "slug" : "pusat",
+        "category" : "Sewa Drone, iPhone, Kamera, Lensa dan Aksesoris",
+        "ig" : "adamasanyaforlife",
+        "gmaps" : "https://maps.app.goo.gl/5JsE5bFhZXCG6HWz5",
+        "address" : "Jl. Muara Takus Raya Jl. Trowulan No.21A, Melong, Kec. Cimahi Sel, Kota Cimahi, Jawa Barat 40534",
+        "phone" : "087765346368",
+        "is_hq" : "y",
+        "st" : "a"
+    },
+    {
+        "name" : "Bali",
+        "slug" : "bali",
+        "category" : "Sewa iPhone",
+        "ig" : "adamasanya.bali",
+        "gmaps" : "https://maps.app.goo.gl/",
+        "address" : "",
+        "phone" : "0",
+        "is_hq" : "n",
+        "st" : "i"
+    },
+    {
+        "name" : "Bekasi",
+        "slug" : "bekasi",
+        "category" : "Sewa iPhone dan Samsung",
+        "ig" : "adamasanya.bekasi",
+        "gmaps" : "https://maps.app.goo.gl/6pgQaTuobgkNcxTcA",
+        "address" : "KOMPLEK SABRINA AZZURA, JALAN SDN BLOK Q NO. 8, BANTARGEBANG 6, Kec. Bantar Gebang, Kota Bks, Jawa Barat 17151",
+        "phone" : "082310731018",
+        "is_hq" : "n",
+        "st" : "a"
+    },
+    {
+        "name" : "Buah Batu (Bandung)",
+        "slug" : "buah-batu",
+        "category" : "Sewa iPhone, Kamera dan Lensa",
+        "ig" : "adamasanya.buahbatu",
+        "gmaps" : "https://maps.app.goo.gl/n5QSy9FZZdup1p6b8",
+        "address" : "Komplek Permata Buah Batu Blok C 15B, Lengkong, Bojongsoang, Kota Bandung, Jawa Barat 40287",
+        "phone" : "0811172321",
+        "is_hq" : "n",
+        "st" : "a"
+    },
+    {
+        "name" : "Garut",
+        "slug" : "garut",
+        "category" : "Sewa iPhone, Kamera dan Lensa",
+        "ig" : "adamasanya.garut",
+        "gmaps" : "https://maps.app.goo.gl/eu8jLZbQqZCvcgqK9",
+        "address" : "JRW3+78P, Padasuka, Kec. Cikajang, Kabupaten Garut, Jawa Barat 44171",
+        "phone" : "1",
+        "is_hq" : "n",
+        "st" : "a"
+    },
+    {
+        "name" : "Gunung Halu",
+        "slug" : "gunung-halu",
+        "category" : "Sewa iPhone, Kamera dan Lensa",
+        "ig" : "adamasanya.gununghalu",
+        "gmaps" : "https://maps.app.goo.gl/jQWujHfL2NLX9AiQ6",
+        "address" : "278F+FGM, Cibitung Simpang, Bojongsalam, Kec. Rongga, Kabupaten Bandung Barat, Jawa Barat 40556",
+        "phone" : "2",
+        "is_hq" : "n",
+        "st" : "a"
+    },
+    {
+        "name" : "Jatinangor",
+        "slug" : "jatinangor",
+        "category" : "Sewa iPhone, Kamera dan Lensa",
+        "ig" : "adamasanya.jatinangor",
+        "gmaps" : "https://maps.app.goo.gl/qHxuiDPZqsrSXESi7",
+        "address" : "Jl. Kolonel Ahmad Syam, Sayang, Kec. Jatinangor, Kabupaten Sumedang, Jawa Barat 45363",
+        "phone" : "3",
+        "is_hq" : "n",
+        "st" : "a"
+    },
+    {
+        "name" : "Karawang",
+        "slug" : "karawang",
+        "category" : "Sewa iPhone, Kamera dan Lensa",
+        "ig" : "adamasanya.karawang",
+        "gmaps" : "https://maps.app.goo.gl/LqHTBWwT1GL735cb6",
+        "address" : "Perum Vila duta pratama Blk. C No.12, Cibalongsari, Kec. Klari, Karawang, Jawa Barat 41371",
+        "phone" : "088202222222",
+        "is_hq" : "n",
+        "st" : "a"
+    },
+    {
+        "name" : "Purwakarta",
+        "slug" : "purwakarta",
+        "category" : "Sewa iPhone",
+        "ig" : "adamasanya.purwakarta",
+        "gmaps" : "https://maps.app.goo.gl/2h9aeBb4UPqqxsDo9",
+        "address" : "Perumahan Bumi Purwa Raya No.4 Blok D, Dangdeur, Kec. Bungursari, Kabupaten Purwakarta, Jawa Barat 41182",
+        "phone" : "4",
+        "is_hq" : "n",
+        "st" : "a"
+    },
+    {
+        "name" : "Sukabumi",
+        "slug" : "sukabumi",
+        "category" : "Sewa iPhone, Kamera dan Lensa",
+        "ig" : "adamasanya.smi",
+        "gmaps" : "https://maps.app.goo.gl/DVZAFyoTUHZCb2QY6",
+        "address" : "Gg. Arayana No.Rt04/05, Tipar, Kec. Citamiang, Kota Sukabumi, Jawa Barat 43141",
+        "phone" : "085939717250",
+        "is_hq" : "n",
+        "st" : "a"
+    },
+    {
+        "name" : "Tangerang",
+        "slug" : "tangerang",
+        "category" : "Sewa iPhone, Kamera dan Lensa",
+        "ig" : "adamasanya.tangerang",
+        "gmaps" : "https://maps.app.goo.gl/E9TaoFegwUmKUznr8",
+        "address" : "RM4V+PVG, Gg. Damai 1, RT.02/RW.04, Gondrong, Kec. Cipondoh, Kota Tangerang, Banten 15146",
+        "phone" : "087708310148",
+        "is_hq" : "n",
+        "st" : "a"
+    },
+    {
+        "name" : "Thrift",
+        "slug" : "thrift",
+        "category" : "Sewa Stone Island, CP Company, Adidas, Nike",
+        "ig" : "adamasanyatime",
+        "gmaps" : "https://maps.app.goo.gl/22ogyoAmho5EaUL98",
+        "address" : "Jl. Rorojonggrang IV No.16, Melong, Kec. Cimahi Sel, Kota Cimahi, Jawa Barat 40534",
+        "phone" : "087829333930",
+        "is_hq" : "n",
+        "st" : "a"
+    }
+]

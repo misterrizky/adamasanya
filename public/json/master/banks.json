@@ -1,0 +1,1017 @@
+[
+  {
+    "id": 1,
+    "name": "AGRONIAGA BANK",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 2,
+    "name": "ANGLOMAS INTERNATIONAL BANK",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 3,
+    "name": "ANZ PANIN BANK",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 4,
+    "name": "BANK AGRIS",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 5,
+    "name": "BANK ANDARA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 6,
+    "name": "BANK ANTAR DAERAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 7,
+    "name": "BANK ARTHA GRAHA INTERNASIONAL",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 8,
+    "name": "BANK ARTOS INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 9,
+    "name": "BANK BCA SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 10,
+    "name": "BANK BISNIS INTERNATIONAL",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 11,
+    "name": "BANK BNI SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 12,
+    "name": "BANK BNP PARIBAS INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 13,
+    "name": "BANK BUMI ARTA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 14,
+    "name": "BANK CAPITAL INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 15,
+    "name": "BANK CENTRAL ASIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 16,
+    "name": "BANK CHINATRUST INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 17,
+    "name": "BANK CIMB NIAGA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 18,
+    "name": "BANK CIMB NIAGA SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 19,
+    "name": "BANK COMMONWEALTH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 20,
+    "name": "BANK DANAMON INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 21,
+    "name": "BANK DANAMON INDONESIA INDONESIA SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 22,
+    "name": "BANK DBS INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 23,
+    "name": "BANK DIPO INTERNATIONAL",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 24,
+    "name": "BANK DKI JAKARTA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 25,
+    "name": "BANK DKI JAKARTA SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 26,
+    "name": "BANK EKONOMI RAHARJA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 27,
+    "name": "BANK FAMA INTERNATIONAL",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 28,
+    "name": "BANK GANESHA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 29,
+    "name": "BANK HANA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 30,
+    "name": "BANK HARDA INTERNASIONAL",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 31,
+    "name": "BANK HS 1906",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 32,
+    "name": "BANK ICB BUMIPUTERA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 33,
+    "name": "BANK ICBC INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 34,
+    "name": "BANK INA PERDANA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 35,
+    "name": "BANK INDEX SELINDO",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 36,
+    "name": "BANK INTERNATIONAL INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 37,
+    "name": "BANK INTERNATIONAL INDONESIA SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 38,
+    "name": "BANK JABAR BANTEN SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 39,
+    "name": "BANK JABAR DAN BANTEN",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 40,
+    "name": "BANK JASA JAKARTA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 41,
+    "name": "BANK KEB INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 42,
+    "name": "BANK KESAWAN",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 43,
+    "name": "BANK KESEJAHTERAAN EKONOMI",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 44,
+    "name": "BANK LIMAN INTERNATIONAL",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 45,
+    "name": "BANK MAHKOTA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 46,
+    "name": "BANK MANDIRI (PERSERO)",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 47,
+    "name": "BANK MASPION INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 48,
+    "name": "BANK MAYAPADA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 49,
+    "name": "BANK MAYBANK SYARIAH INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 50,
+    "name": "BANK MAYORA INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 51,
+    "name": "BANK MEGA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 52,
+    "name": "BANK MESTIKA DHARMA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 53,
+    "name": "BANK METRO EKSPRESS",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 54,
+    "name": "BANK MITRANIAGA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 55,
+    "name": "BANK MIZUHO INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 56,
+    "name": "BANK MUAMALAT INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 57,
+    "name": "BANK MULTIARTA SENTOSA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 58,
+    "name": "BANK MUTIARA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 59,
+    "name": "BANK NATIONALNOBU",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 60,
+    "name": "BANK NEGARA INDONESIA 1946 (Persero)",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 61,
+    "name": "BANK NUSANTARA PARAHYANGAN",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 62,
+    "name": "BANK OCBC NISP",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 63,
+    "name": "BANK OCBC NISP SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 64,
+    "name": "BANK OF AMERICA NA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 65,
+    "name": "BANK OF CHINA LIMITED",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 66,
+    "name": "BANK PAN INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 67,
+    "name": "BANK PANIN SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 68,
+    "name": "BANK PEMBANGUNAN DAERAH ISTIMEWA ACEH SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 69,
+    "name": "BANK PEMBANGUNAN DAERAH JATIM",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 70,
+    "name": "BANK PEMBANGUNAN DAERAH JATIM SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 71,
+    "name": "BANK PEMBANGUNAN DAERAH BALI",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 72,
+    "name": "BANK PEMBANGUNAN DAERAH BENGKULU",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 73,
+    "name": "BANK PEMBANGUNAN DAERAH DIY",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 74,
+    "name": "BANK PEMBANGUNAN DAERAH ISTIMEWA ACEH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 75,
+    "name": "BANK PEMBANGUNAN DAERAH JAMBI",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 76,
+    "name": "BANK PEMBANGUNAN DAERAH JATENG SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 77,
+    "name": "BANK PEMBANGUNAN DAERAH JAWA TENGAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 78,
+    "name": "BANK PEMBANGUNAN DAERAH KALIMANTAN BARAT",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 79,
+    "name": "BANK PEMBANGUNAN DAERAH KALIMANTAN BARAT SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 80,
+    "name": "BANK PEMBANGUNAN DAERAH KALIMANTAN SELATAN",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 81,
+    "name": "BANK PEMBANGUNAN DAERAH KALIMANTAN SELATAN SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 82,
+    "name": "BANK PEMBANGUNAN DAERAH KALIMANTAN TIMUR",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 83,
+    "name": "BANK PEMBANGUNAN DAERAH KALTENG",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 84,
+    "name": "BANK PEMBANGUNAN DAERAH KALTIM SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 85,
+    "name": "BANK PEMBANGUNAN DAERAH LAMPUNG",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 86,
+    "name": "BANK PEMBANGUNAN DAERAH MALUKU",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 87,
+    "name": "BANK PEMBANGUNAN DAERAH NUSA TENGGARA BARAT",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 88,
+    "name": "BANK PEMBANGUNAN DAERAH NUSA TENGGARA TIMUR",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 89,
+    "name": "BANK PEMBANGUNAN DAERAH PAPUA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 90,
+    "name": "BANK PEMBANGUNAN DAERAH RIAU",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 91,
+    "name": "BANK PEMBANGUNAN DAERAH SULAWESI SELATAN",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 92,
+    "name": "BANK PEMBANGUNAN DAERAH SULAWESI TENGAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 93,
+    "name": "BANK PEMBANGUNAN DAERAH SULAWESI TENGGARA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 94,
+    "name": "BANK PEMBANGUNAN DAERAH SULAWESI UTARA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 95,
+    "name": "BANK PEMBANGUNAN DAERAH SUMATERA BARAT (BANK NAGARI)",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 96,
+    "name": "BANK PEMBANGUNAN DAERAH SUMATERA UTARA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 97,
+    "name": "BANK PERMATA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 98,
+    "name": "BANK PERMATA SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 99,
+    "name": "BANK PUNDI INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 100,
+    "name": "BANK RABOBANK INTERNATIONAL INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 101,
+    "name": "BANK RAKYAT INDONESIA (Persero)",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 102,
+    "name": "BANK RESONA PERDANIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 103,
+    "name": "BANK ROYAL INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 104,
+    "name": "BANK SAHABAT PURBA DANARTA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 105,
+    "name": "BANK SBI INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 106,
+    "name": "BANK SINAR HARAPAN BALI",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 107,
+    "name": "BANK SINARMAS",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 108,
+    "name": "BANK SINARMAS SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 109,
+    "name": "BANK SULSELBAR SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 110,
+    "name": "BANK SUMITOMO MITSUI INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 111,
+    "name": "BANK SWADESI",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 112,
+    "name": "BANK SYARIAH BRI",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 113,
+    "name": "BANK SYARIAH BUKOPIN",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 114,
+    "name": "BANK SYARIAH MANDIRI",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 115,
+    "name": "BANK SYARIAH MEGA INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 116,
+    "name": "BANK TABUNGAN NEGARA (Persero)",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 117,
+    "name": "BANK TABUNGAN NEGARA (Persero) SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 118,
+    "name": "BANK TABUNGAN PENSIUNAN NEGARA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 119,
+    "name": "BANK TABUNGAN PENSIUNAN NEGARA SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 120,
+    "name": "BANK UMUM KOPERASI INDONESIA (BUKOPIN)",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 121,
+    "name": "BANK UOB INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 122,
+    "name": "BANK VICTORIA INTERNATIONAL",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 123,
+    "name": "BANK VICTORIA SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 124,
+    "name": "BANK WINDU KENTJANA INTERNATIONAL",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 125,
+    "name": "BANK WOORI INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 126,
+    "name": "BANK YUDHA BHAKTI",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 127,
+    "name": "BPD DIY SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 128,
+    "name": "BPD SUMSEL DAN BABEL",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 129,
+    "name": "BPD SUMSEL DAN BABEL SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 130,
+    "name": "BPD SUMUT SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 131,
+    "name": "CENTRATAMA NASIONAL BANK",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 132,
+    "name": "CHINA CONSTRUCTION BANK",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 133,
+    "name": "CITIBANK NA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 134,
+    "name": "DEUTSCHE BANK AG",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 135,
+    "name": "JPMORGAN CHASE BANK, NA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 136,
+    "name": "Lloyd Bank PLC",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 137,
+    "name": "MAYBANK INDONESIA",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 138,
+    "name": "PRIMA MASTER BANK",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 139,
+    "name": "STANDARD CHARTERED BANK",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 140,
+    "name": "Skandinaviska Enskilda Banken",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 141,
+    "name": "THE BANGKOK BANK PCL",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 142,
+    "name": "THE BANK OF TOKYO MITSUBISHI UFJ LTD.",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 143,
+    "name": "THE HONGKONG AND SHANGHAI BC (HSBC)",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 144,
+    "name": "THE HONGKONG AND SHANGHAI BC (HSBC) SYARIAH",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 145,
+    "name": "Wells Fergo Bank",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  }
+]

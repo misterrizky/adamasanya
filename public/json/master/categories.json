@@ -1,0 +1,209 @@
+[
+  {
+    "id": 1,
+    "name": "Action Camera",
+    "slug": "action-camera",
+    "thumbnail": "category/actioncamera.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 2,
+    "name": "Adapter Camera",
+    "slug": "adapter-camera",
+    "thumbnail": "category/adaptercamera.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 3,
+    "name": "Battery Camera",
+    "slug": "battery-camera",
+    "thumbnail": "category/batterycamera.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 4,
+    "name": "Camera",
+    "slug": "camera",
+    "thumbnail": "category/camera.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 5,
+    "name": "Camera 360",
+    "slug": "camera-360",
+    "thumbnail": "category/camera360.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 6,
+    "name": "Charger Camera",
+    "slug": "charger-camera",
+    "thumbnail": "category/chargercamera.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 7,
+    "name": "Drone",
+    "slug": "drone",
+    "thumbnail": "category/drone.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 8,
+    "name": "Handphone",
+    "slug": "handphone",
+    "thumbnail": "category/handphone.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 9,
+    "name": "Kendaraan",
+    "slug": "kendaraan",
+    "thumbnail": "category/kendaraan.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 10,
+    "name": "Kursi",
+    "slug": "kursi",
+    "thumbnail": "category/kursi.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 11,
+    "name": "Laptop",
+    "slug": "laptop",
+    "thumbnail": "category/laptop.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 12,
+    "name": "Lensa",
+    "slug": "lensa",
+    "thumbnail": "category/lensa.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 13,
+    "name": "Lighting & Flash",
+    "slug": "lighting-flash",
+    "thumbnail": "category/lighting.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 14,
+    "name": "Memory Card",
+    "slug": "memory-card",
+    "thumbnail": "category/memorycard.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 15,
+    "name": "Mic External",
+    "slug": "mic-external",
+    "thumbnail": "category/micexternal.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 16,
+    "name": "Monitor",
+    "slug": "monitor",
+    "thumbnail": "category/monitor.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 17,
+    "name": "Outfit Casual",
+    "slug": "outfit-casual",
+    "thumbnail": "category/outfit-casual.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 18,
+    "name": "PlayStation",
+    "slug": "playstation",
+    "thumbnail": "category/PlayStation.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 19,
+    "name": "Powerbank",
+    "slug": "powerbank",
+    "thumbnail": "category/powerbank.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 20,
+    "name": "Stabilizer",
+    "slug": "stabilizer",
+    "thumbnail": "category/stabilizer.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 21,
+    "name": "Tablet",
+    "slug": "tablet",
+    "thumbnail": "category/tablet.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 22,
+    "name": "Tripod & Monopod",
+    "slug": "tripod-monopod",
+    "thumbnail": "category/tripod.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 23,
+    "name": "Video Booth",
+    "slug": "video-booth",
+    "thumbnail": "category/videobooth.png",
+    "st": "a",
+    "created_at": null,
+    "updated_at": null
+  }
+]
