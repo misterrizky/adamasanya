@@ -1,5 +1,6 @@
 <?php
 use App\Models\User;
+use App\Models\UserTag;
 use function Laravel\Folio\{withTrashed, name};
 use App\Notifications\AccountBannedNotification;
 use App\Notifications\AccountDeletedNotification;
@@ -34,7 +35,8 @@ state([
     ])->find($user),
     // Add state for editing family tags
     'edit_family_tags' => [],
-    'family_tag_inputs' => []
+    'family_tag_inputs' => [],
+    'tagName' => ''
 ]);
 $pending = function(){
     $this->user->st = 'pending';
@@ -90,8 +92,9 @@ $addTag = function() {
         'tagName' => 'required|string|max:255',
     ]);
     
-    $this->user->userTags()->create([
+    UserTag::castAndCreate([
         'name' => $this->tagName,
+        'user_id' => $this->user->id,
         'created_by' => auth()->id(),
     ]);
     

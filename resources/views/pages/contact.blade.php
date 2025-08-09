@@ -1,9 +1,26 @@
 <?php
-use function Livewire\Volt\{state};
+use App\Models\Contact;
+use function Livewire\Volt\{rules,state};
 use function Laravel\Folio\{middleware, name};
 name('contact');
 
-state(['search'])->url();
+state(['nama', 'email', 'subjek', 'pesan']);
+rules(fn () => [
+    'nama' => 'required|string|max:255',
+    'email' => 'required|email|max:255',
+    'subjek' => 'required|string|max:255',
+    'pesan' => 'required|string|max:1000',
+]);
+$send = function(){
+    $this->validate();
+    Contact::castAndCreate([
+        'name' => $this->nama,
+        'email' => $this->email,
+        'subject' => $this->subjek,
+        'message' => $this->pesan,
+    ]);
+    $this->reset();
+}
 ?>
 <x-app>
     <style>
@@ -31,32 +48,36 @@ state(['search'])->url();
                 <div class="card-body p-lg-17">
                     <div class="row mb-3">
                         <div class="col-md-6 pe-lg-10">
-                            <form action="" class="form mb-15" method="post" id="kt_contact_form">
-                                <h1 class="fw-bold text-gray-900 mb-9">Send Us Email</h1>
+                            <x-form action="send" class="form mb-15">
+                                <h1 class="fw-bold text-gray-900 mb-9">Kirim Kami Pesan</h1>
                                 <div class="row mb-5">
                                     <div class="col-md-6 fv-row">
-                                        <label class="fs-5 fw-semibold mb-2">Name</label>
-                                        <input type="text" class="form-control form-control-solid" placeholder="" name="name" />
+                                        <x-form-group name="nama" label="Nama Lengkap" required>
+                                            <x-form-input type="text" name="nama" class="bg-transparent" placeholder="">
+                                            </x-form-input>
+                                        </x-form-group>
                                     </div>
                                     <div class="col-md-6 fv-row">
-                                        <label class="fs-5 fw-semibold mb-2">Email</label>
-                                        <input type="text" class="form-control form-control-solid" placeholder="" name="email" />
+                                        <x-form-group name="email" label="Email Anda" required>
+                                            <x-form-input type="email" name="email" class="bg-transparent" placeholder="">
+                                            </x-form-input>
+                                        </x-form-group>
                                     </div>
                                 </div>
                                 <div class="d-flex flex-column mb-5 fv-row">
-                                    <label class="fs-5 fw-semibold mb-2">Subject</label>
-                                    <input class="form-control form-control-solid" placeholder="" name="subject" />
+                                    <x-form-group name="subjek" label="Subjek" required>
+                                        <x-form-input type="text" name="subjek" class="bg-transparent" placeholder="">
+                                        </x-form-input>
+                                    </x-form-group>
                                 </div>
                                 <div class="d-flex flex-column mb-10 fv-row">
-                                    <label class="fs-6 fw-semibold mb-2">Message</label>
-                                    <textarea class="form-control form-control-solid" rows="6" name="message" placeholder=""></textarea>
+                                    <x-form-group name="pesan" label="Pesan Anda" required>
+                                        <x-form-textarea name="pesan" rows="6" class="bg-transparent" placeholder="">
+                                        </x-form-textarea>
+                                    </x-form-group>
                                 </div>
-                                <button type="submit" class="btn btn-primary" id="kt_contact_submit_button">
-                                    <span class="indicator-label">Send Feedback</span>
-                                    <span class="indicator-progress">Please wait... 
-                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-                                </button>
-                            </form>
+                                <x-button class="btn btn-primary" submit="true" indicator="Harap tunggu..." label="Kirim" />
+                            </x-form>
                         </div>
                         <div class="col-md-6 ps-lg-10">
                             <div id="map_adamasanya" class="w-100 rounded mb-2 mb-lg-0 mt-2" style="height: 486px"></div>

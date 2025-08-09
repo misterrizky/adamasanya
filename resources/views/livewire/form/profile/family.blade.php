@@ -113,7 +113,7 @@ $saveKeluarga = function() {
                     <x-form-input-group>
                         <x-form-input 
                             type="text" 
-                            name="nama" 
+                            name="nama"
                             placeholder="John Doe"
                             autocomplete="text"
                         />
@@ -128,13 +128,18 @@ $saveKeluarga = function() {
                     </x-form-input-group>
                 </x-form-group>
             </div>
-            
+
             <!-- No HP -->
             <div class="col-12 col-md-4">
                 <x-form-group label="No HP" required>
                     <x-form-input-group>
                         <x-form-input-group-text>+62</x-form-input-group-text>
-                        <x-form-input type="text" name="no_hp" class="bg-transparent" placeholder="8123456789" id="no_hp">
+                        <x-form-input 
+                            type="text" 
+                            name="no_hp"
+                            class="bg-transparent" 
+                            placeholder="8123456789"
+                        >
                             @slot('help')
                             <small class="form-text text-muted">
                                 Masukkan nomor HP keluarga Anda tanpa angka 0 atau +62 dan - pada form diatas sesuai dengan contoh.
@@ -208,6 +213,23 @@ $saveKeluarga = function() {
     $('#no_hp').on('input', function() {
         this.value = this.value.replace(/[^0-9]/g, '');
     });
+    // Fungsi untuk mengatur readonly berdasarkan dukungan kontak
+    function setInputReadonly() {
+        const isContactSupported = navigator.contacts && window.ContactsManager;
+        const namaInput = document.getElementById('nama');
+        const noHpInput = document.getElementById('no_hp');
+        
+        if (namaInput && noHpInput) {
+            namaInput.readOnly = isContactSupported;
+            noHpInput.readOnly = isContactSupported;
+        }
+    }
+
+    // Panggil saat halaman dimuat
+    setInputReadonly();
+    
+    // Panggil ulang saat navigasi Livewire
+    document.addEventListener('livewire:navigated', setInputReadonly);
     // Contact picker functionality
     async function pickContacts() {
         if (!navigator.contacts || !window.ContactsManager) {
@@ -233,27 +255,13 @@ $saveKeluarga = function() {
                     }
                     @this.set('no_hp', phone);
                 }
+                
+                // Set kembali readonly setelah memilih kontak
+                setInputReadonly();
             }
         } catch (error) {
             console.error("Error picking contacts:", error);
         }
     }
-    
-    // Add contact picker button if supported
-    function addContactPickerButton() {
-        if (navigator.contacts && window.ContactsManager) {
-            const phoneGroup = document.querySelector('[name="no_hp"]').parentNode;
-            const pickerBtn = document.createElement('button');
-            pickerBtn.type = 'button';
-            pickerBtn.className = 'btn btn-icon btn-light-primary';
-            pickerBtn.innerHTML = '<i class="bi bi-person-lines-fill"></i>';
-            pickerBtn.title = 'Pilih dari kontak';
-            pickerBtn.onclick = pickContacts;
-            phoneGroup.appendChild(pickerBtn);
-        }
-    }
-    
-    document.addEventListener('DOMContentLoaded', addContactPickerButton);
-    document.addEventListener('livewire:navigated', addContactPickerButton);
 </script>
 @endsection

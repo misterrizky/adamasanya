@@ -30,7 +30,7 @@ $collection = computed(function() {
         ],
         [
             'title' => '6. Ketentuan Pembatalan Sewa',
-            'content' => "Pembatalan diluar H-1 atau hari H → Refund 75% dari total yang telah dibayarkan.\nPembatalan H-1 → Refund 50% dari total yang telah dibayarkan.\nPembatalan pada Hari H → Tidak ada refund.\nPermintaan refund di luar skema ini harus dibahas langsung dengan pihak Adamasanya."
+            'content' => "Pembatalan -> Tidak ada refund."
         ],
         [
             'title' => '7. Keterlambatan Pengembalian',
