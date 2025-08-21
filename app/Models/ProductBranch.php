@@ -5,6 +5,7 @@ namespace App\Models;
 use WendellAdriel\Lift\Lift;
 use App\Models\Master\Branch;
 use App\Models\Master\Attribute;
+use App\Models\Transaction\RentItem;
 use Illuminate\Database\Eloquent\Model;
 use WendellAdriel\Lift\Attributes\Relations\BelongsTo;
 
@@ -113,5 +114,28 @@ class ProductBranch extends Model
             default => $value
         };
         return $color;
+    }
+    public function isAvailable($startDate, $endDate, $quantity, $exceptRentId = null)
+    {
+        $rented = RentItem::where('product_branch_id', $this->id)
+            ->whereHas('rent', function($query) use ($startDate, $endDate, $exceptRentId) {
+                $query->where(function($q) use ($startDate, $endDate) {
+                    $q->whereBetween('start_date', [$startDate, $endDate])
+                    ->orWhereBetween('end_date', [$startDate, $endDate])
+                    ->orWhere(function($q2) use ($startDate, $endDate) {
+                        $q2->where('start_date', '<', $startDate)
+                            ->where('end_date', '>', $endDate);
+                    });
+                })
+                ->whereIn('status', ['confirmed', 'active', 'overdue']);
+                
+                if ($exceptRentId) {
+                    $query->where('id', '!=', $exceptRentId);
+                }
+            })
+            ->sum('quantity');
+        $stok = ProductBranch::where('branch_id', $this->branch_id)->where('product_id', $this->product_id)->where('color_id', $this->color_id)->count();
+        // Stock tersedia = stock total - booked
+        return ($stok - $rented) >= $quantity;
     }
 }

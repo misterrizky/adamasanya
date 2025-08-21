@@ -301,14 +301,6 @@ $signOutSingleSession = function($sessionId)
                                         {{ $alamat->city->type }} {{ $alamat->city->name }}, {{ $alamat->state->name }} {{ $alamat->village->poscode }} <br/> ({{ $alamat->notes }})
                                     </div>
                                 @endif
-                                <div class="fw-bold mt-5">Terakhir Masuk</div>
-                                <div class="text-gray-600">
-                                    @if($this->user->last_seen)
-                                        {{ $this->user->last_seen->format('d M Y, h:i a') }}
-                                    @else
-                                        Belum pernah masuk
-                                    @endif
-                                </div>
                             </div>
                         </div>
                     </div>

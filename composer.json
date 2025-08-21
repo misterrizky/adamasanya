@@ -36,6 +36,7 @@
         "opcodesio/log-viewer": "^3.17",
         "safemood/discountify": "^1.5",
         "silviolleite/laravelpwa": "^2.0",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/laravel-activitylog": "^4.10",
         "spatie/laravel-model-status": "^1.18",
         "spatie/laravel-permission": "^6.20",

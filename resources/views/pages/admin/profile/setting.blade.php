@@ -11,12 +11,6 @@ $createStorageLink = function(){
 $clearcaches = function(){
     Artisan::call('optimize:clear');
 };
-$deleteAccount = function(){
-    $user = \App\Models\User::findOrFail(Auth::user()->id);
-    $user->delete();
-    $route = route('home');
-    return $this->redirect($route, navigate: true);
-};
 $logout = function(){
     auth()->logout();
     $route = route('home');
@@ -79,19 +73,6 @@ $logout = function(){
                         </div>
                     </div>
                 </a>
-                <a href="{{ route('admin.profile.privacy') }}" wire:navigate class="card card-dashed hover-elevate-up shadow-sm parent-hover text-decoration-none">
-                    <div class="card-body d-flex align-items-center">
-                        <i class="ki-filled ki-shield-tick fs-3x"></i>
-                        <div class="ms-3">
-                            <div class="text-gray-700 parent-hover-primary fs-4 fw-bold">
-                                Privasi Akun
-                            </div>
-                            <div class="text-gray-500 parent-hover-primary fs-5 mt-1">
-                                Atur penggunaan data
-                            </div>
-                        </div>
-                    </div>
-                </a>
             </div>
         </div>
         <div class="card shadow-sm mb-5">
@@ -148,61 +129,11 @@ $logout = function(){
                 </a>
             </div>
         </div>
-        <div class="card shadow-sm mb-5">
-            <div class="card-header collapsible cursor-pointer rotate collapsed" data-bs-toggle="collapse" data-bs-target="#about_us">
-                <h3 class="card-title">Seputar {{ config('app.name') }}</h3>
-                <div class="card-toolbar rotate-180">
-                    <i class="ki-duotone ki-down fs-1"></i>
-                </div>
-            </div>
-            <div id="about_us" class="collapse">
-                <a href="{{ route('about') }}" wire:navigate class="card card-dashed hover-elevate-up shadow-sm parent-hover">
-                    <div class="card-body d-flex align-items">
-                        <i class="ki-filled ki-information fs-3x"></i>
-                        <span class="ms-3 parent-hover-primary fs-4 fw-bold">
-                            Kenali {{ config('app.name') }}
-                        </span>
-                    </div>
-                </a>
-                <a href="{{ route('career') }}" wire:navigate class="card card-dashed hover-elevate-up shadow-sm parent-hover">
-                    <div class="card-body d-flex align-items">
-                        <i class="ki-filled ki-briefcase fs-3x"></i>
-                        <span class="ms-3 parent-hover-primary fs-4 fw-bold">
-                            Karir di {{ config('app.name') }}
-                        </span>
-                    </div>
-                </a>
-                <a href="{{ route('term-condition') }}" wire:navigate class="card hover-elevate-up shadow-sm parent-hover">
-                    <div class="card-body d-flex align-items">
-                        <i class="ki-filled ki-tablet-text-down fs-3x"></i>
-                        <span class="ms-3 parent-hover-primary fs-4 fw-bold">
-                            Syarat dan Ketentuan
-                        </span>
-                    </div>
-                </a>
-                <a href="{{ route('privacy-policy') }}" wire:navigate class="card hover-elevate-up shadow-sm parent-hover">
-                    <div class="card-body d-flex align-items">
-                        <i class="ki-filled ki-profile-circle fs-3x"></i>
-                        <span class="ms-3 parent-hover-primary fs-4 fw-bold">
-                            Hak Kekayaan Intelektual
-                        </span>
-                    </div>
-                </a>
-            </div>
-        </div>
         <a onclick="logout();" class="card hover-elevate-up shadow-sm parent-hover mb-5">
             <div class="card-body d-flex align-items">
                 <i class="ki-filled ki-exit-right fs-3x"></i>
                 <span class="ms-3 parent-hover-primary fs-4 fw-bold">
                     Keluar Akun
-                </span>
-            </div>
-        </a>
-        <a onclick="deleteAccount();" class="card text-inverse-danger bg-danger hover-elevate-up shadow-sm parent-hover mb-3">
-            <div class="card-body d-flex align-items">
-                <i class="ki-filled ki-trash fs-3x"></i>
-                <span class="ms-3 parent-hover-primary fs-4 fw-bold">
-                    Hapus Akun
                 </span>
             </div>
         </a>
@@ -352,63 +283,6 @@ $logout = function(){
                                         Swal.fire({
                                             title: 'Gagal Logout',
                                             html: `Terjadi kesalahan: <br><span class="text-red-500">${error.message}</span>`,
-                                            icon: 'error'
-                                        });
-                                    });
-                                }
-                            });
-                        }
-                    });
-                }
-                function deleteAccount() {
-                    Swal.fire({
-                        title: 'Hapus Akun Permanen?',
-                        html: `
-                            <div class="text-left">
-                                <p>Anda yakin ingin menghapus akun Anda? Tindakan ini akan:</p>
-                                <ul class="list-disc pl-5">
-                                    <li>Menghapus semua data Anda secara permanen</li>
-                                    <li>Tidak dapat dikembalikan (irreversible)</li>
-                                    <li>Menghentikan semua langganan aktif</li>
-                                </ul>
-                                <p class="mt-3 font-bold">Ketikan "<span class="text-red-500">konfirmasi</span>" untuk verifikasi:</p>
-                                <input type="text" id="confirmationInput" class="swal2-input" placeholder="ketik konfirmasi...">
-                            </div>
-                        `,
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#d33',
-                        cancelButtonColor: '#3085d6',
-                        confirmButtonText: 'Ya, Hapus Akun',
-                        cancelButtonText: 'Batalkan',
-                        reverseButtons: true,
-                        backdrop: true,
-                        allowOutsideClick: false,
-                        preConfirm: () => {
-                            const inputValue = document.getElementById('confirmationInput').value;
-                            if (inputValue.toLowerCase() !== 'konfirmasi') {
-                                Swal.showValidationMessage('Harap ketik "konfirmasi" dengan benar');
-                            }
-                            return inputValue;
-                        }
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            Swal.fire({
-                                title: 'Menghapus Akun...',
-                                html: 'Mohon tunggu, akun Anda sedang dihapus',
-                                allowOutsideClick: false,
-                                didOpen: () => {
-                                    Swal.showLoading();
-                                    @this.deleteAccount().then(() => {
-                                        Swal.fire({
-                                            title: 'Berhasil!',
-                                            text: 'Akun Anda telah berhasil dihapus',
-                                            icon: 'success'
-                                        });
-                                    }).catch(error => {
-                                        Swal.fire({
-                                            title: 'Gagal!',
-                                            html: `Gagal menghapus akun: <br><span class="text-red-500">${error.message}</span>`,
                                             icon: 'error'
                                         });
                                     });

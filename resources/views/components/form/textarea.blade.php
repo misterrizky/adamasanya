@@ -15,7 +15,7 @@
 @php
     $inputClass = 'form-control';
     $sizeClass = $size ? 'form-control-'.$size : '';
-    $inputId = $name . '-' . uniqid();
+    $inputId = $name;
 @endphp
 
 @if($floating)

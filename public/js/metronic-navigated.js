@@ -32,6 +32,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         document.documentElement.setAttribute("data-bs-theme", themeMode);
     }
+    if (window.tns) {
+        window.tns({
+            container: '.tns-default',
+            loop: true,
+            swipeAngle: false,
+            speed: 2000,
+            autoplay: true,
+            autoplayTimeout: 18000,
+            controls: true,
+            nav: false,
+            items: 1,
+            center: false,
+            dots: false,
+            prevButton: '#dpo_prev',
+            nextButton: '#dpo_next',
+            responsive: {
+                1200: { items: 3 },
+                992: { items: 2 }
+            }
+        });
+    }
     AOS.init();
 });
 document.addEventListener('livewire:navigated', () => { 
@@ -67,6 +88,27 @@ document.addEventListener('livewire:navigated', () => {
             themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
         }
         document.documentElement.setAttribute("data-bs-theme", themeMode);
+    }
+    if (window.tns) {
+        window.tns({
+            container: '.tns-default',
+            loop: true,
+            swipeAngle: false,
+            speed: 2000,
+            autoplay: true,
+            autoplayTimeout: 18000,
+            controls: true,
+            nav: false,
+            items: 1,
+            center: false,
+            dots: false,
+            prevButton: '#dpo_prev',
+            nextButton: '#dpo_next',
+            responsive: {
+                1200: { items: 3 },
+                992: { items: 2 }
+            }
+        });
     }
     AOS.init();
 });

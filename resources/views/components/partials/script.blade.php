@@ -15,6 +15,7 @@ var themeMode;
 <script data-navigate-once src="{{ asset('js/aos.js') }}"></script>
 <script data-navigate-once src="{{ asset('js/function.js') }}"></script>
 <script data-navigate-once src="{{ asset('js/metronic-navigated.js') }}"></script>
+<script data-navigate-once src="{{ asset('js/star.js') }}"></script>
 <script data-navigate-once src="{{ asset('js/leaflet.js') }}"></script>
 <script data-navigate-once src="{{ asset('js/esri-leaflet.js') }}"></script>
 <script data-navigate-once src="{{ asset('js/esri-leaflet-geocoder.js') }}"></script>

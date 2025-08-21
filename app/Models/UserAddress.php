@@ -10,6 +10,7 @@ use App\Models\Region\Village;
 use App\Models\Region\Subdistrict;
 use Illuminate\Database\Eloquent\Model;
 use WendellAdriel\Lift\Attributes\Relations\BelongsTo;
+
 #[BelongsTo(User::class)]
 #[BelongsTo(Country::class)]
 #[BelongsTo(State::class)]

@@ -5,9 +5,12 @@ use App\Models\Promo;
 use App\Models\Product;
 use App\Models\Master\Branch;
 use App\Models\ProductBranch;
+use App\Services\CouponService;
 use App\Models\Transaction\Rent;
 use function Laravel\Folio\name;
+use App\Services\MidtransService;
 use Illuminate\Support\Facades\DB;
+use App\Models\Transaction\Payment;
 use Illuminate\Support\Facades\Log;
 use App\Models\Transaction\RentItem;
 use App\Models\Master\BranchSchedule;
@@ -15,6 +18,9 @@ use function Livewire\Volt\{computed, mount, state, rules};
 
 name('product.show');
 state([
+    'kupon_terpakai' => null,
+    'kode_kupon' => null,
+    'jumlah_bayar' => 0,
     'product' => null,
     'promo' => null,
     'variants' => null,
@@ -26,29 +32,113 @@ state([
     'tanggal_ambil' => null,
     'jam_ambil' => null,
     'jumlah_hari' => 1,
-    'branch_hours_error' => null,
-    'time_past_error' => null,
     'total_price_item' => 0,
     'subtotal' => 0,
-    'biaya_layanan' => 4000,
+    'biaya_layanan' => 0, // Hitung 0.8% di calculateTotals
+    'biaya_materai' => 10000, // Fixed
     'diskon' => 0,
     'deposit' => 0,
     'grandtotal' => 0,
+    'catatan' => null,
 ]);
 
 mount(function () {
     $this->product = Product::where('slug', request()->slug)->firstOrFail();
-    
-    // Get branch by slug
-    $this->selectedBranch = Branch::where('slug', request()->branch)->first();
-    
-    if(Auth::user()->userAddress){
-        if(Auth::user()->userAddress->city->name != $this->selectedBranch->city->name){
-            $this->deposit = 500000;
-        }else{
-            $this->deposit = 0;
+    $this->selectedBranch = Branch::where('slug', request()->branch)->firstOrFail();
+
+    if (auth()->user()?->userAddress) {
+        $this->deposit = auth()->user()->userAddress->city->name !== $this->selectedBranch->city->name ? 500000 : 0;
+    }
+
+    $this->variants = ProductBranch::with(['color', 'storage', 'branch'])
+        ->where('product_id', $this->product->id)
+        ->where('branch_id', $this->selectedBranch->id)
+        ->where('is_publish', 1)
+        ->get();
+
+    if ($this->variants->count() > 0) {
+        $this->selectedVariant = $this->variants->first();
+        $this->selectedColor = $this->selectedVariant->color_id;
+        $this->selectedStorage = $this->selectedVariant->storage_id;
+    }
+
+    $this->tanggal_ambil = now()->format('Y-m-d');
+    $this->jam_ambil = now()->addHour()->format('H:i');
+});
+
+$totals = computed(function () {
+    $totalPriceItem = $this->selectedVariant->rent_price * $this->quantity * $this->jumlah_hari;
+    $subtotal = $totalPriceItem;
+    $serviceFee = $subtotal * 0.008;
+
+    $couponService = app(CouponService::class);
+    $dummyRent = new Rent();
+    $dummyRent->start_date = $this->tanggal_ambil;
+    $dummyRent->deposit_amount = $this->deposit;
+    $dummyRent->ematerai_fee = $this->biaya_materai;
+    $dummyRent->items = collect([
+        (object) [
+            'subtotal' => $subtotal,
+            'price' => $this->selectedVariant->rent_price,
+            'quantity' => $this->quantity,
+            'duration_days' => $this->jumlah_hari,
+        ]
+    ]);
+    $dummyRent->user_id = auth()->id();
+    $dummyRent->branch_id = $this->selectedBranch->id;
+
+    $calculated = $couponService->calculateDiscount($dummyRent, $this->promo);
+
+    return [
+        'subtotal' => $subtotal,
+        'biaya_layanan' => $calculated['biaya_layanan'],
+        'biaya_materai' => $calculated['biaya_materai'],
+        'diskon' => $calculated['diskon'],
+        'deposit' => $calculated['deposit'],
+        'grandtotal' => $calculated['grandtotal'],
+        'total_days' => $calculated['total_days'],
+    ];
+});
+
+$updateTotals = function () {
+    $computedTotals = $this->totals;
+    $this->subtotal = $computedTotals['subtotal'];
+    $this->biaya_layanan = $computedTotals['biaya_layanan'];
+    $this->biaya_materai = $computedTotals['biaya_materai'];
+    $this->diskon = $computedTotals['diskon'];
+    $this->deposit = $computedTotals['deposit'];
+    $this->grandtotal = $computedTotals['grandtotal'];
+    $this->jumlah_hari = $computedTotals['total_days'];
+    $this->jumlah_bayar = $computedTotals['grandtotal'] / 2;
+    // dd($this->grandtotal);
+    $this->dispatch('grandtotal-updated');
+};
+mount(function () {
+    $this->product = Product::where('slug', request()->slug)->firstOrFail();
+    $this->selectedBranch = Branch::where('slug', request()->branch)
+        ->where('st', 'a')
+        ->firstOrFail();
+
+    // Initialize deposit
+    $this->deposit = 500000; // Default for unauthenticated or missing address
+
+    if (auth()->check()) {
+        if (auth()->user()->userAddress) {
+            // Condition 1: Check if user has never rented
+            $hasRented = Rent::where('user_id', auth()->id())
+                ->whereIn('status', ['pending', 'confirmed', 'on_rent', 'completed'])
+                ->exists();
+
+            // Condition 2: Check if user's city matches the branch's city
+            $isSameCity = auth()->user()->userAddress->city->name === $this->selectedBranch->city->name;
+
+            // Set deposit to 0 only if both conditions are false
+            if ($hasRented && $isSameCity) {
+                $this->deposit = 0;
+            }
         }
     }
+
     // Load product variants for this branch
     $this->variants = ProductBranch::with(['color', 'storage', 'branch'])
         ->where('product_id', $this->product->id)
@@ -65,13 +155,51 @@ mount(function () {
 
     // Set default pickup date and time
     $this->tanggal_ambil = now()->format('Y-m-d');
-    $this->jam_ambil = now()->format('H:i');
-    // $this->jumlah_hari = 1;
+    $this->jam_ambil = now()->addHour()->format('H:i');
 
-    // Check for active promo
-    $this->promo = $this->getActivePromo();
+    // Update totals
+    $this->updateTotals();
 });
+$terapkanKupon = function () {
+    $this->validate(['kode_kupon' => 'required|exists:promos,code']);
+    $this->is_loading = true;
 
+    try {
+        $this->promo = Promo::where('code', $this->kode_kupon)->first();
+        $couponService = app(CouponService::class);
+        
+        $dummyRent = new Rent([
+            'branch_id' => $this->selectedBranch->id,
+            'total_days' => $this->jumlah_hari,
+            'user_id' => auth()->id(),
+            'start_date' => $this->tanggal_ambil,
+        ]);
+        $dummyRent->items = collect([ (object) ['subtotal' => $this->subtotal, 'price' => $this->selectedVariant->rent_price, 'quantity' => $this->quantity] ]);
+        $validation = $couponService->validateCoupon($this->promo, $dummyRent);
+
+        if (!$validation['valid']) {
+            $this->addError('kode_kupon', implode(' ', $validation['errors']));
+            $this->is_loading = false;
+            return;
+        }
+
+        $this->kupon_terpakai = $this->promo->code;
+        $this->updateTotals(); // Update otomatis, termasuk jumlah_bayar
+        $this->is_loading = false;
+    } catch (\Exception $e) {
+        Log::error('Terapkan kupon gagal', ['error' => $e->getMessage()]);
+        $this->addError('kode_kupon', 'Gagal menerapkan kupon: ' . $e->getMessage());
+        $this->is_loading = false;
+    }
+};
+
+// Tambah fungsi resetKupon jika ada
+$resetKupon = function () {
+    $this->promo = null;
+    $this->kupon_terpakai = null;
+    $this->kode_kupon = null;
+    $this->updateTotals(); // Update otomatis
+};
 // Get active promo
 $getActivePromo = function () {
     $now = now();
@@ -108,69 +236,16 @@ $updatedSelectedStorage = function () {
 
 $updateSelectedVariant = function () {
     $variant = $this->variants
-        ->when($this->selectedColor, function ($query) {
-            return $query->where('color_id', $this->selectedColor);
-        })
-        ->when($this->selectedStorage, function ($query) {
-            return $query->where('storage_id', $this->selectedStorage);
-        })
-        ->first();
+    ->when($this->selectedColor, function ($query) {
+        return $query->where('color_id', $this->selectedColor);
+    })
+    ->when($this->selectedStorage, function ($query) {
+        return $query->where('storage_id', $this->selectedStorage);
+    })
+    ->first();
 
     $this->selectedVariant = $variant;
 };
-
-// Add to cart methods
-$addToCart = function ($type, $variantId = null) {
-    $variant = $variantId ? ProductBranch::find($variantId) : $this->selectedVariant;
-
-    if (!$variant) {
-        $this->dispatch('toast-error', message: 'Varian tidak valid');
-        return;
-    }
-
-    if ($variant->stock < 1) {
-        $this->dispatch('toast-error', message: 'Stok tidak mencukupi');
-        return;
-    }
-
-    // Validate pickup date and time for rental
-    if ($type === 'rent' && (!$this->pickupDate || !$this->pickupTime)) {
-        $this->dispatch('toast-error', message: 'Harap tentukan tanggal dan jam pengambilan');
-        return;
-    }
-
-    // Determine route based on auth status
-    if (auth()->check()) {
-        // Add to cart logic
-        try {
-            \Cart::add([
-                'id' => $variant->id,
-                'name' => $this->product->name,
-                'price' => $type === 'rent' ? $variant->rent_price : $variant->sale_price,
-                'quantity' => $this->quantity,
-                'attributes' => [
-                    'type' => $type,
-                    'product_id' => $this->product->id,
-                    'color' => $variant->color->value ?? null,
-                    'storage' => $variant->storage->value ?? null,
-                    'branch_id' => $variant->branch_id,
-                    'branch_name' => $variant->branch->name,
-                    'image' => $this->getProductImage($variant),
-                    'pickup_date' => $type === 'rent' ? $this->pickupDate : null,
-                    'pickup_time' => $type === 'rent' ? $this->pickupTime : null,
-                ],
-            ]);
-
-            $this->dispatch('cart-updated');
-            $this->dispatch('toast-success', message: 'Produk ditambahkan ke keranjang');
-        } catch (\Exception $e) {
-            $this->dispatch('toast-error', message: 'Gagal menambahkan ke keranjang: ' . $e->getMessage());
-        }
-    } else {
-        return redirect()->route('login');
-    }
-};
-
 $getProductImage = function ($variant) {
     if ($variant->color) {
         $colorImage = asset('storage/product/' . $this->product->slug . '-' . Str::slug($variant->color->value) . '.png');
@@ -248,67 +323,6 @@ $set = function($type, $value) {
     $this->$type = $value;
     $this->dispatch('variant-selected');
 };
-$checkBranchHours = function() {
-    // Reset errors
-    $this->branch_hours_error = null;
-    $this->time_past_error = null;
-
-    // Cek jika tanggal dan jam sudah diisi
-    if (!$this->tanggal_ambil || !$this->jam_ambil) {
-        return;
-    }
-
-    // Buat DateTime object untuk waktu booking dan waktu sekarang
-    $bookingDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $this->tanggal_ambil . ' ' . $this->jam_ambil);
-    $now = \Carbon\Carbon::now();
-
-    // Cek jika waktu booking sudah terlewat
-    if ($bookingDateTime->lt($now)) {
-        $this->time_past_error = 'Waktu booking tidak boleh lebih awal dari waktu sekarang';
-        return;
-    }
-
-    // Lanjut pengecekan jam operasional cabang
-    $dayOfWeek = $bookingDateTime->dayOfWeek; // 0 (Sunday) to 6 (Saturday)
-    
-    $branchHour = BranchSchedule::where('branch_id', $this->selectedBranch->id)
-                        ->where('day_of_week', $dayOfWeek)
-                        ->first();
-
-    if (!$branchHour || !$branchHour->is_open) {
-        $this->branch_hours_error = 'Cabang tutup pada hari yang dipilih';
-        return;
-    }
-
-    $selectedTime = $bookingDateTime->format('H:i:s');
-    $openTime = $branchHour->open_time;
-    $closeTime = $branchHour->close_time;
-
-    if ($selectedTime < $openTime || $selectedTime > $closeTime) {
-        $this->branch_hours_error = "Jam operasional cabang: {$openTime} - {$closeTime}";
-    }
-};
-$generateCode = function() {
-    // Format: BR{YYMM}{nomor urut 4 digit}
-    $currentYearMonth = date('ym'); // Tahun dan bulan 2 digit (contoh: 2406 untuk Juni 2024)
-    
-    // Ambil nomor urut terakhir di bulan ini
-    $lastRent = Rent::where('code', 'like', 'RENT'.$currentYearMonth.'%')
-                    ->orderBy('code', 'desc')
-                    ->first();
-    
-    $sequenceNumber = 1;
-    if ($lastRent) {
-        // Ekstrak nomor urut dari kode terakhir
-        $lastSequence = (int) substr($lastRent->code, 6);
-        $sequenceNumber = $lastSequence + 1;
-    }
-    
-    // Format nomor urut 4 digit dengan leading zero
-    $formattedSequence = str_pad($sequenceNumber, 4, '0', STR_PAD_LEFT);
-    
-    return 'RENT' . $currentYearMonth . $formattedSequence;
-};
 $checkProductAvailability = function($productId, $startDate, $endDate) {
     // Cek stok total produk
     $product = ProductBranch::find($productId);
@@ -330,90 +344,154 @@ $checkProductAvailability = function($productId, $startDate, $endDate) {
     
     return $totalStock - $rentedCount;
 };
-$sewaSekarang = function(){
-    $this->validate([
-        'tanggal_ambil' => 'required|date',
-        'jam_ambil' => 'required',
-        'jumlah_hari' => 'required',
-    ]);
-    $this->checkBranchHours();
-    if ($this->time_past_error || $this->branch_hours_error) {
-        $errorMessage = $this->time_past_error ?? $this->branch_hours_error;
-        $this->dispatch('toast-info', message: 'Tidak bisa memesan: ' . $errorMessage);
+$validatePickupTime = function () {
+    $pickupDateTime = Carbon::parse($this->tanggal_ambil . ' ' . $this->jam_ambil);
+    if ($pickupDateTime->isPast()) {
+        $this->dispatch('toast-info', message: 'Waktu pengambilan tidak boleh di masa lalu.');
         return;
     }
-    $startDateTime = Carbon::createFromFormat('Y-m-d H:i', $this->tanggal_ambil . ' ' . $this->jam_ambil);
-    $endDateTime = (clone $startDateTime)->addDays($this->jumlah_hari);
-    // Cek ketersediaan produk
-    $availableStock = $this->checkProductAvailability(
-        $this->selectedVariant->id,
-        $startDateTime->format('Y-m-d'),
-        $endDateTime->format('Y-m-d')
-    );
-    
-    if ($availableStock < 1) {
-        $this->dispatch('toast-info', message: 'Produk tidak tersedia untuk tanggal dan jam yang dipilih');
+    $schedule = BranchSchedule::where('branch_id', $this->selectedBranch->id)
+        ->where('day_of_week', $pickupDateTime->format('l'))
+        ->where('is_open', true)
+        ->first();
+
+    if (!$schedule) {
+        $this->dispatch('toast-info', message: 'Waktu pengambilan di luar jam operasional cabang.');
+        return;
     }
 
-    try {
-        DB::beginTransaction();
+    $pickupTime = $pickupDateTime->format('H:i');
+    $openTime = $schedule->open_time;
+    $endTime = $schedule->end_time;
 
-        $rentCode = $this->generateCode();
-        // Generate kode booking
-        // Buat data pemesanan
-        $st = $this->selectedVariant->rent_price * $this->jumlah_hari;
-        $gt = $this->selectedVariant->rent_price * $this->jumlah_hari + 4000;
-        $rent = Rent::castAndCreate([
+    // Handle jadwal melewati tengah malam (contoh: 22:00 - 06:00)
+    if ($endTime < $openTime) {
+        if ($pickupTime >= $openTime || $pickupTime <= $endTime) {
+            // Waktu valid (dalam rentang melewati tengah malam)
+        } else {
+            $this->dispatch('toast-info', message: 'Waktu pengambilan di luar jam operasional cabang.');
+            return;
+        }
+    } 
+    // Handle jadwal normal (tidak melewati tengah malam)
+    else {
+        if ($pickupTime < $openTime || $pickupTime > $endTime) {
+            $this->dispatch('toast-info', message: 'Waktu pengambilan di luar jam operasional cabang.');
+            return;
+        }
+    }
+};
+$sewa = function () {
+    $myTransaction = Rent::where('user_id', auth()->id())->whereNotIn('status',['completed','cancelled'])->first();
+    if($myTransaction) {
+        $this->dispatch('toast-info', message: 'Anda masih memiliki transaksi yang belum selesai.');
+        return;
+    }
+    // Validasi manual untuk jumlah_bayar
+    $minimumAmount = $this->grandtotal * 0.5;
+    if ($this->jumlah_bayar < $minimumAmount || $this->jumlah_bayar > $this->grandtotal) {
+        $this->dispatch('toast-info', message: 'Jumlah pembayaran tidak valid (min 50%, max total).');
+        return;
+    }
+    // Validasi lainnya tetap seperti semula
+    $this->validate(
+        [
+            'kode_kupon' => ['nullable', 'string', 'max:255'],
+            'jumlah_hari' => ['required', 'integer', 'min:1'],
+            'tanggal_ambil' => ['required', 'date', 'after_or_equal:today'],
+            'jam_ambil' => ['required', 'date_format:H:i'],
+            'jumlah_bayar' => ['required', 'numeric'], // Hapus min/max disini
+            'catatan' => ['nullable', 'string', 'max:1000'],
+        ]
+    );
+
+    if ($this->validatePickupTime()) {
+        return;
+    }
+    if (!$this->selectedVariant->isAvailable($this->tanggal_ambil, Carbon::parse($this->tanggal_ambil)->addDays($this->jumlah_hari), $this->quantity)) {
+        $this->dispatch('toast-info', message: 'Stok tidak tersedia untuk periode yang dipilih.');
+        return;
+    }
+
+    DB::beginTransaction();
+    try {
+        $rent = Rent::create([
+            'user_id' => auth()->id(),
             'branch_id' => $this->selectedBranch->id,
-            'user_id' => Auth::id(),
-            'code' => $rentCode,
-            'notes' => $this->notes ?? null,
-            'start_date' => $startDateTime->format('Y-m-d'),
-            'end_date' => $endDateTime->format('Y-m-d'),
-            'start_time' => $this->jam_ambil,
-            'end_time' => $this->jam_ambil, // Bisa disesuaikan
-            'total_days' => $this->jumlah_hari,
-            'discount_amount' => 0,
-            'deposit_amount' => $this->deposit,
-            'total_price' => $gt,
-            'total_paid' => 0,
-            'payment_type' => 'transfer',
-            'type' => 'online',
             'status' => 'pending',
-            'status_paid' => 'pending',
+            'start_date' => $this->tanggal_ambil,
+            'end_date' => Carbon::parse($this->tanggal_ambil)->addDays($this->jumlah_hari),
+            'pickup_time' => $this->jam_ambil,
+            'deposit_amount' => $this->deposit,
+            'ematerai_fee' => $this->biaya_materai,
+            'total_amount' => $this->grandtotal,
+            'notes' => $this->catatan,
         ]);
 
-        // Buat item pemesanan
-        $item = RentItem::castAndCreate([
+        RentItem::create([
             'rent_id' => $rent->id,
             'product_branch_id' => $this->selectedVariant->id,
+            'quantity' => $this->quantity,
             'price' => $this->selectedVariant->rent_price,
-            'qty' => $this->jumlah_hari,
-            'discount' => 0,
-            'subtotal' => $st,
+            'duration_days' => $this->jumlah_hari,
+            'subtotal' => $this->subtotal,
         ]);
 
-        DB::commit();
-        return $this->redirect(route('consumer.transaction.sign', ['code' => $rent->code]), navigate: true);
+        $couponService = app(CouponService::class);
+        if ($this->kode_kupon) {
+            $couponService->applyCoupon($rent, $this->kode_kupon);
+        }
 
+        $rent->calculateTotalPrice();
+        $midtransService = app(MidtransService::class);
+        $orderId = $rent->code;
+        $snapToken = $midtransService->createSnapToken($rent, $this->jumlah_bayar, false);
+        if (!$snapToken) {
+            throw new Exception('Failed to generate snap token');
+        }
+        $serviceFee = $rent->items->sum('subtotal') * 0.8 / 100; // 0.8% service fee
+        $paymentData = [
+            'paid_amount' => $this->jumlah_bayar, // Default full payment
+            'remaining_amount' => $rent->total_amount - $this->jumlah_bayar,
+            'deposit_amount' => $rent->deposit_amount ?? 0,
+            'service_fee' => $serviceFee, // 0.8% service fee
+            'ematerai_fee' => 10000,
+        ];
+        $payment = Payment::castAndCreate([
+            'payable_type' => get_class($rent),
+            'payable_id' => $rent->id,
+            'user_id' => Auth::id(),
+            'merchant_id' => env('MIDTRANS_MERCHANT_ID', 'default_merchant'),
+            'order_id' => $midtransService->generateOrderId($rent),
+            'gross_amount' => $rent->total_amount,
+            'currency' => 'IDR',
+            'transaction_status' => 'pending',
+            'transaction_time' => now(),
+            'payment_data' => json_encode($paymentData),
+            'snap_token' => $snapToken
+        ]);
+        DB::commit();
+
+        $this->dispatch('show-snap', [
+            'token' => $snapToken,
+            'rentCode' => $rent->code
+        ]);
+        // $this->redirect(route('consumer.transaction.view', ['code' => $rent->code]));
+    } catch (\App\Exceptions\InvalidPaymentAmountException $e) {
+        $this->dispatch('toast-info', message: $e->getMessage());
     } catch (\Exception $e) {
         DB::rollBack();
-        $this->dispatch('toast-error', message: 'Gagal membuat pemesanan: ' . $e->getMessage());
-        Log::error('Booking error: ' . $e->getMessage());
+        Log::error('Rental creation failed', ['error' => $e->getMessage()]);
+        $this->dispatch('toast-info', message: 'Gagal membuat sewa: ' . $e->getMessage());
     }
 };
-$calculateTotal = function(){
-    $this->total_price_item = $this->selectedVariant->price * $this->jumlah_hari;
-    $this->subtotal = $this->selectedVariant->price * $this->jumlah_hari;
-    $this->grandtotal = $this->selectedVariant->price * $this->jumlah_hari + $this->biaya_layanan + $this->deposit;
-};
 $decreaseHari = function() {
-    $this->jumlah_hari--;
-    $this->calculateTotal();
+    $this->jumlah_hari = $this->jumlah_hari- 1;
+    $this->updateTotals();
 };
 $increaseHari = function(){
-    $this->jumlah_hari++;
-    $this->calculateTotal();
+    $this->jumlah_hari = $this->jumlah_hari + 1;
+    $this->updateTotals();
 };
 ?>
 <x-app>
@@ -421,7 +499,6 @@ $increaseHari = function(){
     <div id="kt_app_content" class="app-content flex-column-fluid py-10">
         <div class="container">
             <div class="row g-10">
-                <!-- Product Gallery -->
                 <div class="col-lg-7">
                     <div class="product-gallery">
                         <img src="{{ $this->getProductImage($this->selectedVariant) }}" 
@@ -429,20 +506,18 @@ $increaseHari = function(){
                              alt="{{ $this->product->name }}"
                              loading="lazy">
                     </div>
-                    
-                    <!-- Ulasan Section -->
                     <div class="card mt-10">
                         <div class="card-body p-8">
                             <div class="d-flex justify-content-between align-items-center mb-6">
                                 <h4 class="mb-0">Ulasan</h4>
-                                @if($this->product->ratings->count() > 0)
+                                @if($this->product->ratingsCount() > 0)
                                     <a href="#all-reviews" class="btn btn-sm btn-light-primary">
-                                        Lihat Semua ({{ $this->product->ratings->count() }})
+                                        Lihat Semua ({{ $this->product->ratingsCount() }})
                                     </a>
                                 @endif
                             </div>
                             
-                            @if($this->product->ratings->count() > 0)
+                            @if($this->product->ratingsCount() > 0)
                                 <!-- Rating Summary -->
                                 <div class="row mb-8">
                                     <div class="col-md-4 text-center mb-4 mb-md-0">
@@ -452,7 +527,7 @@ $increaseHari = function(){
                                                 <i class="ki-{{ $i <= $this->product->averageRating() ? 'filled text-warning' : 'outline' }} ki-star"></i>
                                             @endfor
                                         </div>
-                                        <div class="text-muted">Berdasarkan {{ $this->product->ratings->count() }} ulasan</div>
+                                        <div class="text-muted">Berdasarkan {{ $this->product->ratingsCount() }} ulasan</div>
                                     </div>
                                     <div class="col-md-8">
                                         @for($i = 5; $i >= 1; $i--)
@@ -461,7 +536,7 @@ $increaseHari = function(){
                                                 <div class="progress flex-grow-1" style="height: 8px;">
                                                     @php
                                                         $count = $this->product->ratings->where('rating', $i)->count();
-                                                        $percentage = $this->product->ratings->count() > 0 ? ($count / $this->product->ratings->count()) * 100 : 0;
+                                                        $percentage = $this->product->ratingsCount() > 0 ? ($count / $this->product->ratingsCount()) * 100 : 0;
                                                     @endphp
                                                     <div class="progress-bar bg-warning" role="progressbar" style="width: {{ $percentage }}%" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
@@ -474,46 +549,44 @@ $increaseHari = function(){
                                 <!-- Featured Reviews -->
                                 <div class="mb-8">
                                     <h5 class="mb-4">Ulasan Teratas</h5>
-                                    <div class="row g-4">
-                                        @foreach($this->product->ratings->where('status', 'approved')->sortByDesc('created_at')->take(2) as $rating)
-                                            <div class="col-md-6">
-                                                <div class="review-card p-4 h-100">
-                                                    <div class="d-flex align-items-center mb-3">
-                                                        <div class="symbol symbol-35px symbol-circle me-3">
-                                                            @if($rating->is_anonymous)
-                                                                <span class="symbol-label bg-light-primary text-primary fw-bold">
-                                                                    A
-                                                                </span>
-                                                            @else
-                                                                <span class="symbol-label bg-light-primary text-primary fw-bold">
-                                                                    {{ substr($rating->user->name, 0, 1) }}
-                                                                </span>
-                                                            @endif
-                                                        </div>
-                                                        <div>
-                                                            <div class="fw-bold">
-                                                                {{ $rating->is_anonymous ? 'Pengguna Anonim' : $rating->user->name }}
-                                                            </div>
-                                                            <div class="text-muted fs-7">
-                                                                {{ $rating->created_at->diffForHumans() }}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="rating-stars mb-2">
-                                                        @for($i = 1; $i <= 5; $i++)
-                                                            <i class="ki-{{ $i <= $rating->rating ? 'filled text-warning' : 'outline' }} ki-star"></i>
-                                                        @endfor
-                                                    </div>
-                                                    <p class="mb-3">{{ $rating->review }}</p>
-                                                    @if($rating->media->count() > 0)
-                                                        <div class="review-media">
-                                                            @foreach($rating->media->take(3) as $media)
-                                                                <img src="{{ asset($media->media_path) }}" alt="Review media" class="img-thumbnail">
-                                                            @endforeach
-                                                        </div>
+                                    <div class="row g-6">
+                                        @foreach($this->product->ratings->where('status', 'approved')->sortByDesc('created_at')->take(5) as $rating)
+                                        <div class="col-12">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="symbol symbol-35px symbol-circle me-3">
+                                                    @if($rating->is_anonymous)
+                                                        <span class="symbol-label bg-light-primary text-primary fw-bold">
+                                                            A
+                                                        </span>
+                                                    @else
+                                                        <span class="symbol-label bg-light-primary text-primary fw-bold">
+                                                            {{ substr($rating->user->name, 0, 1) }}
+                                                        </span>
                                                     @endif
                                                 </div>
+                                                <div>
+                                                    <div class="fw-bold">
+                                                        {{ $rating->is_anonymous ? 'Pengguna Anonim' : $rating->user->name }}
+                                                    </div>
+                                                    <div class="text-muted fs-7">
+                                                        {{ $rating->created_at->diffForHumans() }}
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <div class="rating-stars mb-2">
+                                                @for($i = 1; $i <= 5; $i++)
+                                                    <i class="ki-{{ $i <= $rating->rating ? 'filled text-warning' : 'outline' }} ki-star"></i>
+                                                @endfor
+                                            </div>
+                                            <p class="mb-3">{{ $rating->review }}</p>
+                                            @if($rating->medias->count() > 0)
+                                                <div class="review-media">
+                                                    @foreach($rating->medias->take(3) as $media)
+                                                        <img src="{{ $media->image }}" alt="Review media" class="img-thumbnail">
+                                                    @endforeach
+                                                </div>
+                                            @endif
+                                        </div>
                                         @endforeach
                                     </div>
                                 </div>
@@ -533,58 +606,54 @@ $increaseHari = function(){
                             @endif
                         </div>
                     </div>
-                    
-                    <!-- All Reviews Section -->
-                    @if($this->product->ratings->count() > 0)
+                    @if($this->product->ratingsCount() > 0)
                         <div class="card mt-10" id="all-reviews">
                             <div class="card-body p-8">
                                 <h4 class="mb-6">Semua Ulasan</h4>
                                 <div class="row g-6">
                                     @foreach($this->product->ratings->where('status', 'approved')->sortByDesc('created_at') as $rating)
                                         <div class="col-12">
-                                            <div class="review-card p-4">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <div class="symbol symbol-35px symbol-circle me-3">
-                                                        @if($rating->is_anonymous)
-                                                            <span class="symbol-label bg-light-primary text-primary fw-bold">
-                                                                A
-                                                            </span>
-                                                        @else
-                                                            <span class="symbol-label bg-light-primary text-primary fw-bold">
-                                                                {{ substr($rating->user->name, 0, 1) }}
-                                                            </span>
-                                                        @endif
-                                                    </div>
-                                                    <div>
-                                                        <div class="fw-bold">
-                                                            {{ $rating->is_anonymous ? 'Pengguna Anonim' : $rating->user->name }}
-                                                        </div>
-                                                        <div class="text-muted fs-7">
-                                                            {{ $rating->created_at->diffForHumans() }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="rating-stars mb-2">
-                                                    @for($i = 1; $i <= 5; $i++)
-                                                        <i class="ki-{{ $i <= $rating->rating ? 'filled text-warning' : 'outline' }} ki-star"></i>
-                                                    @endfor
-                                                </div>
-                                                <p class="mb-3">{{ $rating->review }}</p>
-                                                @if($rating->media->count() > 0)
-                                                    <div class="review-media">
-                                                        @foreach($rating->media as $media)
-                                                            <img src="{{ asset($media->media_path) }}" alt="Review media" class="img-thumbnail">
-                                                        @endforeach
-                                                    </div>
-                                                @endif
-                                                @if($rating->rating > 3)
-                                                    <div class="mt-3">
-                                                        <span class="badge bg-success bg-opacity-10 text-success">
-                                                            <i class="ki-filled ki-check-circle me-1"></i>Merekomendasikan produk ini
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="symbol symbol-35px symbol-circle me-3">
+                                                    @if($rating->is_anonymous)
+                                                        <span class="symbol-label bg-light-primary text-primary fw-bold">
+                                                            A
                                                         </span>
+                                                    @else
+                                                        <span class="symbol-label bg-light-primary text-primary fw-bold">
+                                                            {{ substr($rating->user->name, 0, 1) }}
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                                <div>
+                                                    <div class="fw-bold">
+                                                        {{ $rating->is_anonymous ? 'Pengguna Anonim' : $rating->user->name }}
                                                     </div>
-                                                @endif
+                                                    <div class="text-muted fs-7">
+                                                        {{ $rating->created_at->diffForHumans() }}
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <div class="rating-stars mb-2">
+                                                @for($i = 1; $i <= 5; $i++)
+                                                    <i class="ki-{{ $i <= $rating->rating ? 'filled text-warning' : 'outline' }} ki-star"></i>
+                                                @endfor
+                                            </div>
+                                            <p class="mb-3">{{ $rating->review }}</p>
+                                            @if($rating->medias->count() > 0)
+                                                <div class="review-media">
+                                                    @foreach($rating->medias as $media)
+                                                        <img src="{{ $media->image }}" alt="Review media" class="img-thumbnail">
+                                                    @endforeach
+                                                </div>
+                                            @endif
+                                            @if($rating->rating > 3)
+                                                <div class="mt-3">
+                                                    <span class="badge bg-success bg-opacity-10 text-success">
+                                                        <i class="ki-filled ki-check-circle me-1"></i>Merekomendasikan produk ini
+                                                    </span>
+                                                </div>
+                                            @endif
                                         </div>
                                     @endforeach
                                 </div>
@@ -592,47 +661,28 @@ $increaseHari = function(){
                         </div>
                     @endif
                 </div>
-                
-                <!-- Product Details -->
                 <div class="col-lg-5">
                     <div class="card">
                         <div class="card-body p-8">
-                            <!-- Category -->
                             <div class="mb-4">
                                 <span class="badge bg-primary bg-opacity-10 text-primary fs-7 fw-semibold rounded-pill py-2">
                                     {{ $this->product->category->name ?? 'No Category' }}
                                 </span>
                             </div>
-                            
-                            <!-- Product Name -->
                             <h1 class="mb-2 fs-2x fw-bold text-gray-900">{{ $this->product->name }}</h1>
-                            
-                            <!-- Rating & Location -->
                             <div class="d-flex align-items-center text-muted fs-7 mb-6">
                                 <span class="me-3">
                                     <i class="ki-solid ki-star text-warning me-1"></i>
                                     {{ number_format($this->product->averageRating()) }}
-                                    @if($this->product->ratings->count() > 0)
-                                        <span class="text-muted">({{ $this->product->ratings->count() }})</span>
+                                    @if($this->product->ratingsCount() > 0)
+                                        <span class="text-muted">({{ $this->product->ratingsCount() }} Ulasan)</span>
                                     @endif
                                 </span>
                                 <span>
                                     <i class="ki-filled ki-geolocation text-danger me-1"></i> 
-                                    {{ $this->selectedBranch->city->name ?? 'Unknown' }}
+                                    {{ $this->selectedBranch->name }}
                                 </span>
                             </div>
-                            
-                            <!-- Branch Info -->
-                            <div class="alert alert-primary d-flex align-items-center p-4 rounded-4 shadow-sm mb-8">
-                                <i class="ki-filled ki-shop fs-1 me-4"></i>
-                                <div class="d-flex flex-column">
-                                    <h4 class="mb-1">Cabang {{ $this->selectedBranch->name }}</h4>
-                                    <span>Alamat: {{ $this->selectedBranch->address }}</span>
-                                    <small class="text-muted">Jam Operasional: {{ $this->selectedBranch->operational_hours ?? '09:00 - 21:00' }}</small>
-                                </div>
-                            </div>
-                            
-                            <!-- Color Options -->
                             @if($this->colors->count() > 1)
                             <div class="mb-6">
                                 <label class="form-label fw-semibold d-block mb-3">Warna</label>
@@ -659,8 +709,6 @@ $increaseHari = function(){
                                 </div>
                             </div>
                             @endif
-                            
-                            <!-- Storage Options -->
                             @if($this->storages->count() > 1)
                             <div class="mb-8">
                                 <label class="form-label fw-semibold d-block mb-3">Storage</label>
@@ -685,11 +733,8 @@ $increaseHari = function(){
                                 </div>
                             </div>
                             @endif
-                            
-                            <!-- Price Display -->
                             <div class="price-display mb-8">
                                 @if($this->selectedVariant && $this->selectedVariant->sale_price > 0)
-                                    <!-- Rental Price Section -->
                                     <div class="rental-price mb-6">
                                         <div class="d-flex align-items-baseline">
                                             <span class="fs-2x fw-bold text-primary me-2">
@@ -705,11 +750,7 @@ $increaseHari = function(){
                                         </div>
                                         <div class="text-muted fs-7 mt-1">Sewa per hari</div>
                                     </div>
-                                    
-                                    <!-- Divider with improved spacing -->
                                     <div class="separator separator-content my-6">atau</div>
-                                    
-                                    <!-- Purchase Option Section -->
                                     <div class="purchase-option bg-light-success p-4 rounded-3 mb-6">
                                         <div class="d-flex flex-wrap align-items-center">
                                             <span class="fs-6 me-2">Dapat dimiliki dengan:</span>
@@ -730,7 +771,6 @@ $increaseHari = function(){
                                         </div>
                                     </div>
                                 @else
-                                    <!-- Rental Only Section -->
                                     <div class="rental-price mb-6">
                                         <div class="d-flex align-items-baseline">
                                             <span class="fs-2x fw-bold text-primary me-2">
@@ -748,76 +788,116 @@ $increaseHari = function(){
                                     </div>
                                 @endif
                             </div>
-                            
-                            <!-- Pickup Date and Time -->
                             <div class="pickup-datetime mb-8">
                                 <div class="row g-3">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-semibold me-4">
+                                            Jumlah @if($this->selectedVariant->sale_price == 0) Hari @endif :
+                                            <span class="ms-1" data-bs-toggle="tooltip" aria-label="{{$this->selectedVariant->sale_price > 0 ? 'Jumlah = Jumlah hari sewa atau Quantity yang ingin di beli' : '' }}" data-bs-original-title="{{$this->selectedVariant->sale_price > 0 ? 'Jumlah = Jumlah hari sewa atau Quantity yang ingin di beli' : 'Jumlah hari kamu ingin sewa' }}">
+                                                <i class="ki-filled ki-information text-gray-500 fs-6"></i>
+                                            </span>
+                                        </label>
+                                        <div class="position-relative w-md-100px"
+                                            data-kt-dialer="true"
+                                            data-kt-dialer-min="1"
+                                            data-kt-dialer-max="365"
+                                            data-kt-dialer-step="1"
+                                            data-kt-dialer-prefix=""
+                                            data-kt-dialer-decimals="0">
+                                            <button type="button" wire:click="decreaseHari" class="btn btn-icon btn-active-color-gray-700 position-absolute translate-middle-y top-50 start-0" data-kt-dialer-control="decrease">
+                                                <i class="ki-filled ki-minus-squared fs-2"></i>
+                                            </button>
+                                            <input type="text" wire:model.live="jumlah_hari" class="form-control form-control-solid border-0 ps-12" data-kt-dialer-control="input" placeholder="Amount" readonly />
+                                            <button type="button" wire:click="increaseHari" class="btn btn-icon btn-active-color-gray-700 position-absolute translate-middle-y top-50 end-0" data-kt-dialer-control="increase">
+                                                <i class="ki-filled ki-plus-squared fs-2"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
                                         <x-form-group name="tanggal_ambil" label="Tanggal Ambil" required>
                                             <x-form-input type="date" name="tanggal_ambil" min="{{ now()->format('Y-m-d') }}" class="bg-transparent" id="tanggal_ambil"/>
                                         </x-form-group>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <x-form-group name="jam_ambil" label="Jam Ambil" required>
                                             <x-form-input type="time" name="jam_ambil" min="{{ now()->format('H:i') }}" class="bg-transparent" id="jam_ambil"/>
                                         </x-form-group>
                                     </div>
+                                    <div class="col-md-12">
+                                        <x-form-group name="catatan" label="Catatan">
+                                            <x-form-textarea name="catatan" class="bg-transparent" id="catatan"/>
+                                        </x-form-group>
+                                    </div>
                                 </div>
                             </div>
-                            
-                            <!-- Quantity Selector -->
-                            <div class="d-flex align-items-center mb-8">
-                                <label class="form-label fw-semibold me-4">
-                                    Jumlah @if($this->selectedVariant->sale_price == 0) Hari @endif :
-                                    <span class="ms-1" data-bs-toggle="tooltip" aria-label="{{$this->selectedVariant->sale_price > 0 ? 'Jumlah = Jumlah hari sewa atau Quantity yang ingin di beli' : '' }}" data-bs-original-title="{{$this->selectedVariant->sale_price > 0 ? 'Jumlah = Jumlah hari sewa atau Quantity yang ingin di beli' : 'Jumlah hari kamu ingin sewa' }}">
-                                        <i class="ki-filled ki-information text-gray-500 fs-6"></i>
-                                    </span>
-                                </label>
-                                <!--begin::Dialer-->
-                                <div class="position-relative w-md-300px"
-                                    data-kt-dialer="true"
-                                    data-kt-dialer-min="1"
-                                    data-kt-dialer-max="365"
-                                    data-kt-dialer-step="1"
-                                    data-kt-dialer-prefix=""
-                                    data-kt-dialer-decimals="0">
-
-                                    <!--begin::Decrease control-->
-                                    <button type="button" wire:click="decreaseHari" class="btn btn-icon btn-active-color-gray-700 position-absolute translate-middle-y top-50 start-0" data-kt-dialer-control="decrease">
+                            @if(!$kupon_terpakai)
+                            <div class="mb-4">
+                                <label for="kode_kupon" class="form-label">Gunakan Kupon:</label>
+                                <div class="input-group">
+                                    <x-form-input name="kode_kupon" class="bg-transparent" autofocus placeholder="Masukkan kode kupon" />
+                                    <x-button class="btn btn-primary" id="tombol_gunakan" href="terapkanKupon" indicator="Harap tunggu..." label="Gunakan" />
+                                </div>
+                            </div>
+                            @else
+                            <div class="alert alert-success d-flex align-items-center gap-2 mb-4">
+                                <i class="ki-filled ki-ticket-star fs-2"></i>
+                                Kupon "{{ $kode_kupon }}" telah diterapkan. Diskon: Rp {{ number_format($diskon) }}
+                                <x-button class="btn btn-danger" id="tombol_reset" href="resetKupon" indicator="Harap tunggu..." label="Hapus" />
+                            </div>
+                            @endif
+                            <div class="mb-8">
+                                <div class="d-flex flex-column gap-3">
+                                    <div class="d-flex justify-content-between">
+                                        <span>Subtotal:</span>
+                                        <span class="fw-bold">Rp {{ number_format($this->subtotal) }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span>Diskon:</span>
+                                        <span class="fw-bold text-success">- Rp {{ number_format($this->diskon) }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            <span class="text-gray-700 me-2">Deposit</span>
+                                            <i class="ki-outline ki-information-5 text-gray-500 fs-6" 
+                                            data-bs-toggle="tooltip" 
+                                            title="Biaya deposit hanya untuk penyewa yang diluar domisili cabang pilihan"></i>
+                                        </div>
+                                        <span class="fw-bold text-{{ $deposit > 0 ? 'success' : 'danger' }}">
+                                            Rp {{ number_format($deposit) }}
+                                        </span>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span>Biaya Lainnya:</span>
+                                        <span>Rp {{ number_format($biaya_layanan + $biaya_materai) }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between border-top border-gray-300 pt-3 mt-2">
+                                        <h4 class="m-0">Total:</h4>
+                                        <h3 class="m-0 text-primary" data-grandtotal>Rp {{ number_format($this->grandtotal) }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="jumlah_bayar" class="form-label">Jumlah Pembayaran:</label>
+                                <div class="position-relative w-md-400px" id="dialer_jumlah_bayar">
+                                    <button type="button" class="btn btn-icon btn-active-color-gray-700 position-absolute translate-middle-y top-50 start-0" data-kt-dialer-control="decrease">
                                         <i class="ki-filled ki-minus-squared fs-2"></i>
                                     </button>
-                                    <!--end::Decrease control-->
-
-                                    <!--begin::Input control-->
-                                    <input type="text" wire:model.live="jumlah_hari" class="form-control form-control-solid border-0 ps-12" data-kt-dialer-control="input" placeholder="Amount" readonly />
-                                    <!--end::Input control-->
-
-                                    <!--begin::Increase control-->
-                                    <button type="button" wire:click="increaseHari" class="btn btn-icon btn-active-color-gray-700 position-absolute translate-middle-y top-50 end-0" data-kt-dialer-control="increase">
+                                    <x-form-input type="tel" name="jumlah_bayar" class="bg-transparent ps-12" placeholder="Masukkan jumlah pembayaran" readonly />
+                                    <button type="button" class="btn btn-icon btn-active-color-gray-700 position-absolute translate-middle-y top-50 end-0" data-kt-dialer-control="increase">
                                         <i class="ki-filled ki-plus-squared fs-2"></i>
                                     </button>
-                                    <!--end::Increase control-->
                                 </div>
-                                <!--end::Dialer-->
                             </div>
-                            <small class="form-text text-muted mb-10">
-                                
-                            </small>
-                            
-                            <!-- Action Buttons (Desktop) -->
-                            <div class="d-grid gap-3 d-none d-lg-block">
+                            <div class="d-grid gap-3">
                                 <div class="d-flex gap-3">
-                                    <button class="btn btn-primary rounded-pill fw-bold py-3 flex-grow-1" 
-                                            wire:click="sewaSekarang">
-                                        <i class="ki-filled ki-calendar fs-2 me-2"></i> Sewa Sekarang
-                                    </button>
+                                    <x-button class="btn btn-primary rounded-pill fw-bold py-3 flex-grow-1" id="tombol_sewa_desktop" href="sewa" icon="ki-filled ki-calendar fs-2 ms-2" indicator="Harap tunggu..." label="Sewa Sekarang" />
                                     @if($this->selectedVariant->sale_price > 0)
                                         <button class="btn btn-warning rounded-pill fw-bold py-3 flex-grow-1" 
-                                                wire:click="addToCart('buy')">
+                                                wire:click="beli">
                                             <i class="ki-filled ki-purchase fs-2 me-2"></i> Beli Sekarang
                                         </button>
                                         <button class="btn btn-success rounded-pill fw-bold py-3 flex-grow-1" 
-                                                wire:click="addToCart('cart')">
+                                                wire:click="addToCart">
                                             <i class="ki-filled ki-cart fs-2 me-2"></i> Keranjang
                                         </button>
                                     @endif
@@ -825,8 +905,6 @@ $increaseHari = function(){
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Branch Operational Hours -->
                     <div class="card mt-10">
                         <div class="card-body p-8">
                             <h4 class="mb-4">Jam Operasional Cabang</h4>
@@ -870,100 +948,218 @@ $increaseHari = function(){
                 </div>
             </div>
         </div>
-        
-        <!-- Sticky Action Bar (Mobile) -->
-        <div class="sticky-action-bar d-lg-none" id="stickyActionBar">
-            <div class="container">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="d-flex flex-column me-3">
-                        <span class="fw-bold text-gray-900 fs-4">Rp{{ number_format($this->discountedRent, 0, ',', '.') }}</span>
-                        <span class="text-muted fs-7">/hari</span>
-                    </div>
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-primary rounded-pill fw-bold py-3 px-4" 
-                                wire:click="addToCart('rent')">
-                            <i class="ki-filled ki-calendar fs-2 me-1"></i> Sewa
-                        </button>
-                        @if($this->selectedVariant->sale_price > 0)
-                            <button class="btn btn-warning rounded-pill fw-bold py-3 px-4" 
-                                    wire:click="addToCart('buy')">
-                                <i class="ki-filled ki-purchase fs-2 me-1"></i> Beli
-                            </button>
-                            <button class="btn btn-success rounded-pill fw-bold py-3 px-4" 
-                                    wire:click="addToCart('cart')">
-                                <i class="ki-filled ki-cart fs-2 me-1"></i> Keranjang
-                            </button>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-    @endvolt
     @section('custom_js')
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
     <script data-navigate-once>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Quantity controls
-            Livewire.on('decrease-hari', () => {
-                if (this.jumlah_hari > 1) {
-                    this.jumlah_hari--;
-                }
-            });
+        // Variabel global untuk menyimpan instance dialer
+        // Fungsi untuk mengupdate dialer dengan nilai min dan max baru
+        function updateJumlahBayarDialer(minAmount, maxAmount) {
+            // Hancurkan dialer lama jika ada
+            if (window.dialerObject) {
+                window.dialerObject.destroy();
+            }
             
-            Livewire.on('increase-hari', () => {
-                this.jumlah_hari++;
-            });
+            const dialerElement = document.querySelector("#dialer_jumlah_bayar");
+            if (!dialerElement) return;
             
-            // Show sticky action bar on scroll
-            window.addEventListener('scroll', function() {
-                const actionBar = document.getElementById('stickyActionBar');
-                if (window.scrollY > 100) {
-                    actionBar.classList.add('show');
+            const options = {
+                min: minAmount,
+                max: maxAmount,
+                step: 5000,
+                prefix: "",
+                decimals: 0
+            };
+            
+            window.dialerObject = new KTDialer(dialerElement, options);
+
+            window.dialerObject.on('kt.dialer.change', function(){
+                const currentValue = window.dialerObject.getValue();
+                if(currentValue < maxAmount){
+                    @this.set('jumlah_bayar', currentValue);
                 } else {
-                    actionBar.classList.remove('show');
+                    @this.set('jumlah_bayar', maxAmount);
                 }
             });
+        }
+        // Fungsi untuk mendapatkan nilai grandtotal dari elemen
+        function getGrandTotalValue() {
+            const grandtotalElement = document.querySelector('[data-grandtotal]');
+            if (grandtotalElement) {
+                return parseInt(grandtotalElement.textContent.replace(/\D/g, ''));
+            }
+            return 0;
+        }
+        function setupLivewireGrandtotalListener() {
+            // Listen untuk event Livewire yang mengindikasikan update grandtotal
+            window.addEventListener('grandtotal-updated', () => {
+                setTimeout(() => {
+                    const grandtotal = getGrandTotalValue();
+                    const minAmount = grandtotal / 2;
+                    const maxAmount = grandtotal;
+                    console.log(grandtotal,minAmount);
+                    updateJumlahBayarDialer(minAmount, maxAmount);
+                }, 1000);
+            });
+        }
+
+        // Fungsi untuk memastikan Snap.js sudah dimuat
+        function ensureSnapIsLoaded(callback) {
+            if (typeof window.snap !== 'undefined') {
+                callback();
+                return;
+            }
+
+            // Jika belum dimuat, tunggu hingga siap
+            const checkSnap = setInterval(() => {
+                if (typeof window.snap !== 'undefined') {
+                    clearInterval(checkSnap);
+                    callback();
+                }
+            }, 100);
+        }
+
+        function showSnap(payload) {
+            ensureSnapIsLoaded(() => {
+                // Validasi payload
+                if (!payload) {
+                    console.error('Payload is missing');
+                    return;
+                }
+                
+                const { token, rentCode } = payload;
+                
+                if (!token) {
+                    console.error('Snap token is missing in payload', payload);
+                    return;
+                }
+                
+                // Jalankan pembayaran Snap
+                window.snap.pay(token, {
+                    onSuccess: function(result) {
+                        Swal.fire({
+                            title: 'Pembayaran Berhasil!',
+                            text: 'Pelunasan transaksi telah berhasil.',
+                            icon: 'success',
+                            timer: 2000,
+                            timerProgressBar: true
+                        }).then(() => {
+                            window.location.href = `/consumer/transaction/${rentCode}/view`;
+                        });
+                    },
+                    onPending: function(result) {
+                        Swal.fire({
+                            title: 'Pembayaran Tertunda',
+                            text: 'Silakan selesaikan pembayaran Anda.',
+                            icon: 'info',
+                            timer: 2000,
+                            timerProgressBar: true
+                        }).then(() => {
+                            window.location.href = `/consumer/transaction/${rentCode}/view`;
+                        });
+                    },
+                    onError: function(error) {
+                        Swal.fire({
+                            title: 'Pembayaran Gagal',
+                            text: 'Terjadi kesalahan saat memproses pembayaran.',
+                            icon: 'error'
+                        });
+                    },
+                    onClose: function() {
+                        Swal.fire({
+                            title: 'Pembayaran Dibatalkan',
+                            text: 'Anda menutup jendela pembayaran.',
+                            icon: 'warning'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Event listener untuk event 'show-snap'
+        function setupSnapListener() {
+            window.addEventListener('show-snap', (event) => {
+                showSnap(event.detail[0]);
+            });
+        }
+
+        // Inisialisasi saat pertama kali load
+        document.addEventListener('DOMContentLoaded', function() {
+            setupSnapListener();
+            initProductPage();
+            setupLivewireGrandtotalListener();
+    
+            // Inisialisasi dialer pertama kali
+            const grandtotal = getGrandTotalValue();
+            const minAmount = grandtotal / 2;
+            const maxAmount = grandtotal;
             
-            // Initialize date picker
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('pickupDate').min = today;
-            
-            // Set default pickup time to next hour
-            const now = new Date();
-            const nextHour = new Date(now.getTime() + 60 * 60 * 1000);
-            document.getElementById('pickupTime').value = nextHour.toTimeString().substring(0, 5);
+            updateJumlahBayarDialer(minAmount, maxAmount);
         });
-        document.addEventListener('livewire:navigated', () => {
-            // Quantity controls
-            Livewire.on('decrease-hari', () => {
-                if (this.jumlah_hari > 1) {
-                    this.jumlah_hari--;
-                }
-            });
+
+        // Inisialisasi setelah navigasi Livewire
+        document.addEventListener('livewire:navigated', function() {
+            setupSnapListener();
+            initProductPage();
+            setupLivewireGrandtotalListener();
+            // Inisialisasi dialer setelah navigasi
+            setTimeout(() => {
+                const grandtotal = getGrandTotalValue();
+                const minAmount = grandtotal / 2;
+                const maxAmount = grandtotal;
+                
+                updateJumlahBayarDialer(minAmount, maxAmount);
+            }, 500);
             
-            Livewire.on('increase-hari', () => {
-                this.jumlah_hari++;
-            });
-            
-            // Show sticky action bar on scroll
-            window.addEventListener('scroll', function() {
+            // Pastikan Snap.js tersedia setelah navigasi
+            if (typeof window.snap === 'undefined') {
+                const script = document.createElement('script');
+                script.src = 'https://app.sandbox.midtrans.com/snap/snap.js';
+                script.setAttribute('data-client-key', '{{ env('MIDTRAMS_CLIENT_KEY') }}');
+                document.head.appendChild(script);
+            }
+        });
+
+        function initProductPage() {
+            const hariInput = document.querySelector('[wire\\:model="jumlah_hari"]');
+            if (hariInput) {
+                const decreaseBtn = hariInput.previousElementSibling;
+                const increaseBtn = hariInput.nextElementSibling;
+
+                decreaseBtn.addEventListener('click', () => {
+                    const current = parseInt(hariInput.value);
+                    if (current > 1) {
+                        hariInput.value = current - 1;
+                        hariInput.dispatchEvent(new Event('input'));
+                    }
+                });
+
+                increaseBtn.addEventListener('click', () => {
+                    const current = parseInt(hariInput.value);
+                    hariInput.value = current + 1;
+                    hariInput.dispatchEvent(new Event('input'));
+                });
+            }
+
+            const pickupDate = document.getElementById('pickupDate');
+            if (pickupDate) {
+                pickupDate.min = new Date().toISOString().split('T')[0];
+            }
+
+            const pickupTime = document.getElementById('pickupTime');
+            if (pickupTime && !pickupTime.value) {
+                const nextHour = new Date(new Date().getTime() + 60 * 60 * 1000);
+                pickupTime.value = nextHour.toTimeString().substring(0, 5);
+            }
+
+            window.addEventListener('scroll', () => {
                 const actionBar = document.getElementById('stickyActionBar');
-                if (window.scrollY > 100) {
-                    actionBar.classList.add('show');
-                } else {
-                    actionBar.classList.remove('show');
+                if (actionBar) {
+                    actionBar.classList.toggle('show', window.scrollY > 100);
                 }
             });
-            
-            // Initialize date picker
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('pickupDate').min = today;
-            
-            // Set default pickup time to next hour
-            const now = new Date();
-            const nextHour = new Date(now.getTime() + 60 * 60 * 1000);
-            document.getElementById('pickupTime').value = nextHour.toTimeString().substring(0, 5);
-        });
+        }
     </script>
     @endsection
+    @endvolt
 </x-app>

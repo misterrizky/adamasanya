@@ -185,9 +185,9 @@ $send = function(){
                                 popup: "<b>Adamasanyaforlife</b><br>Jl. Muara Takus Raya Jl. Trowulan No.21A"
                             },
                             {
-                                coords: [-8.6682339, 115.1833329],
+                                coords: [-8.6893894, 115.2426421],
                                 title: "adamasanya.bali",
-                                popup: "<b>Adamasanya Bali</b><br>Gg Dieng 10, No 10"
+                                popup: "<b>Adamasanya Bali</b><br>Jalan Tukad Balian Gang Nuri No. 2"
                             },
                             {
                                 coords: [-6.3090973,106.9901487],
@@ -199,7 +199,7 @@ $send = function(){
                                 title: "adamasanya.buahbatu",
                                 popup: "<b>Adamasanya BuahBatu</b><br>Komplek Permata Buah Batu Blok C 15B"
                             },
-                                                        {
+                            {
                                 coords: [-7.3542963,107.8033139],
                                 title: "adamasanya.garut",
                                 popup: "<b>Adamasanya Garut</b>"

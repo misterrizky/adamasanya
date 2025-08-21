@@ -207,12 +207,9 @@ $save = function() {
 
     // Kirim notifikasi ke pengguna cabang
     $branch = \App\Models\Master\Branch::findOrFail($this->cabang);
-    $branchUsers = \App\Models\User::where('branch_id', $this->cabang)
-    ->role('Cabang')->first();
-    foreach ($branchUsers as $branchUser) {
-        $branchUser->notify(new NewConsumerNotification($user, $branch));
-    }
-    $this->startChat($branchUser->first()->id);
+    $branchUsers = \App\Models\User::role('Cabang')->where('branch_id', $this->cabang)->first();
+    $branchUsers->notify(new NewConsumerNotification($user, $branch));
+    $this->startChat($branchUsers->id);
     $this->dispatch('toast-success', message: "Data berhasil disimpan. Silakan tunggu verifikasi dari admin.");
     return $this->redirect(route('home'), navigate: true);
 };
@@ -890,7 +887,7 @@ $branches = computed(function(){
         // requestMicrophonePermission();
         // requestCameraPermission()();
         // requestLocation();
-        pickContacts();
+        // pickContacts();
         $('#repeater_keluarga').repeater({
             initEmpty: false,
             show: function () {

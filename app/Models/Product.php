@@ -27,7 +27,7 @@ class Product extends Model
             if(file_exists(public_path('storage/'.$this->thumbnail))){
                 return asset('storage/'.$this->thumbnail);
             }else{
-                return asset('media/avatars/blank.png');
+                return asset('storage/'.$this->thumbnail);
             }
         }
     }
@@ -37,6 +37,11 @@ class Product extends Model
     }
     public function averageRating()
     {
-        return $this->ratings()->avg('rating');
+        return $this->ratings()->avg('rating') ?? 0; // Default 0 jika belum ada rating
+    }
+
+    public function ratingsCount()
+    {
+        return $this->ratings()->count();
     }
 }

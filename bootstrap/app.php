@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Transaction\Rent;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -31,13 +32,22 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withSchedule(function (\Illuminate\Console\Scheduling\Schedule $schedule) {
         // Tambahkan scheduled tasks di sini
         $schedule->command('payments:check-status')->everyFiveMinutes();
-        $schedule->command('inspire')->hourly();
+        // $schedule->command('inspire')->hourly();
         
         // Atau bisa juga memanggil closure langsung
         $schedule->call(function () {
-            // Logika pengecekan langsung di sini
-            \Illuminate\Support\Facades\Log::info('Scheduled task executed at: '.now());
-        })->dailyAt('03:00');
+            Rent::where('status', 'active')
+                ->where('end_date', '<', now())
+                ->get()
+                ->each(function ($rent) {
+                    $lateDays = now()->diffInDays($rent->end_date);
+                    $lateFee = $lateDays * $rent->total_amount * 0.05;
+                    $rent->user->charge($lateFee, 'late_fee');
+                    $rent->status = 'overdue';
+                    $rent->save();
+                    activity()->log('Late fee charged for rent ID: ' . $rent->id);
+                });
+        })->daily();
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

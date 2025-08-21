@@ -15,11 +15,11 @@ state(['branch_id' => '', 'period' => 'monthly']);
 $branches = computed(fn () => Branch::pluck('name', 'id')->toArray());
 
 $transactionSummary = computed(function () {
-    $rentQuery = Rent::query()->selectRaw('COUNT(*) as count, SUM(total_price) as revenue')
+    $rentQuery = Rent::query()->selectRaw('COUNT(*) as count, SUM(total_amount) as revenue')
         ->when($this->branch_id, fn($q) => $q->where('branch_id', $this->branch_id))
         ->when(auth()->user()->hasRole('Cabang'), fn($q) => $q->where('branch_id', auth()->user()->branch_id));
     
-    $saleQuery = Sale::query()->selectRaw('COUNT(*) as count, SUM(total_price) as revenue')
+    $saleQuery = Sale::query()->selectRaw('COUNT(*) as count, SUM(total_amount) as revenue')
         ->when($this->branch_id, fn($q) => $q->where('branch_id', $this->branch_id))
         ->when(auth()->user()->hasRole('Cabang'), fn($q) => $q->where('branch_id', auth()->user()->branch_id));
     
@@ -94,14 +94,14 @@ $topProducts = computed(function () {
     $branchFilter = $this->branch_id ?: (auth()->user()->hasRole('Cabang') ? auth()->user()->branch_id : null);
 
     $rentItems = RentItem::query()
-        ->selectRaw('rent_items.product_branch_id, SUM(rent_items.qty) as total_quantity')
+        ->selectRaw('rent_items.product_branch_id, SUM(rent_items.quantity) as total_quantity')
         ->join('rents', 'rent_items.rent_id', '=', 'rents.id')
         ->join('product_branches', 'rent_items.product_branch_id', '=', 'product_branches.id')
         ->when($branchFilter, fn($q) => is_array($branchFilter) ? $q->whereIn('product_branches.branch_id', $branchFilter) : $q->where('product_branches.branch_id', $branchFilter))
         ->groupBy('rent_items.product_branch_id');
 
     $saleItems = SaleItem::query()
-        ->selectRaw('sale_items.product_branch_id, SUM(sale_items.qty) as total_quantity')
+        ->selectRaw('sale_items.product_branch_id, SUM(sale_items.quantity) as total_quantity')
         ->join('sales', 'sale_items.sale_id', '=', 'sales.id')
         ->join('product_branches', 'sale_items.product_branch_id', '=', 'product_branches.id')
         ->when($branchFilter, fn($q) => is_array($branchFilter) ? $q->whereIn('product_branches.branch_id', $branchFilter) : $q->where('product_branches.branch_id', $branchFilter))

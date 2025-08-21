@@ -20,7 +20,7 @@ return [
     /**
      * Route name where you want to redirect users after signing.
      */
-    'redirect_route_name' => 'rent.signed',
+    'redirect_route_name' => 'admin.rent.signed',
 
     /**
      * Width and height of the signature rectangle.
